@@ -12,9 +12,16 @@
             <!-- fragment View (조각뷰) -->
             <c:Fragment fragmentName="project1706.view.fragment.HelloFrag"/>
 
-            <!-- fragment Dialog (팝업) 호출 -->
-            <c:Fragment fragmentName="project1706.view.fragment.Dialog"/>
-            <Button text="View 내에 호출한 Dialog 팝업으로 오픈" press="onOpenDialog"/>
+            <!-- fragment Dialog (팝업) View에서 호출 -->
+            <!-- <c:Fragment fragmentName="project1706.view.fragment.Dialog"/>
+            <Button text="View 내에 호출한 Dialog 팝업으로 오픈" press="onOpenDialog"/> -->
+            <c:Fragment fragmentName="project1706.view.fragment.Name"/>
+            <Button text="View 내에서 NameDialog 오픈" press="onOpenNameDialog"/>
+
+            <!-- fragment Dialog Controller에서 호출 -->
+            <Button text="Controller에서 팝업 오픈 ex" press="onOpenDialog_con"/>
+            <Button text="NameDialog Controller에서 팝업 오픈" press="onOpenNameDialog_con"/>
+
         </content>
     </Page>
 </mvc:View>

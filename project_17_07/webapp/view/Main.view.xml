@@ -1,0 +1,65 @@
+<mvc:View controllerName="project1707.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+    xmlns:t="sap.ui.table"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+
+        <VBox >
+            <Text text="{/name}님 안녕하세요"/>
+            <ToolbarSpacer />
+            <Text text="{/list/0/name}님 안녕"/>
+        </VBox>
+
+        <ToolbarSpacer />
+
+        <Text text="{test>/name/firstName} {test>/name/lastName} 님"/>
+        <ToolbarSpacer />
+        <Text text="📞Tel : {test>/datas/2/tel}"/>
+
+        <ToolbarSpacer />
+
+        <Panel headerText="Model 예제" expandable="true" expanded="true">
+            <l:HorizontalLayout >        
+                <Input id="idInput"/>
+                <Button text="Send" press="onClick"/>
+                <Text id="inputText" text="{inputModel>/text} World"/>
+            </l:HorizontalLayout>
+        </Panel>
+
+
+        <t:Table
+            rows="{test>/datas}"
+            selectionMode="MultiToggle"
+            paste="onPaste"
+            ariaLabelledBy="title">
+            <t:extension>
+                <OverflowToolbar style="Clear">
+                    <Title id="title" text="Products"/>
+                </OverflowToolbar>
+            </t:extension>
+            <t:columns>
+                <t:Column width="11rem">
+                    <Label text="Name" />
+                    <t:template>
+                        <Text text="{test>name}" wrapping="false" />
+                    </t:template>
+                </t:Column>
+                <t:Column width="11rem">
+                    <Label text="Age" />
+                    <t:template>
+                        <Text text="{test>age}" wrapping="false" />
+                    </t:template>
+                </t:Column>
+                <t:Column width="11rem">
+                    <Label text="Tel" />
+                    <t:template>
+                        <Text text="{test>tel}" wrapping="false" />
+                    </t:template>
+                </t:Column>
+            </t:columns>
+        </t:Table>
+
+
+    </Page>
+</mvc:View>

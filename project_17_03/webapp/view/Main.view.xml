@@ -1,7 +1,16 @@
 <mvc:View controllerName="project1703.controller.Main"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-        <content />
-    </Page>
+    xmlns:layout="sap.ui.layout"
+    xmlns:m="sap.m">
+    <m:Page id="page" title="{i18n>title}">
+    
+        <layout:VerticalLayout width="350px" >
+            <layout:HorizontalLayout >
+                <m:Input id="inputTxt" value="값을 입력해보세요."/>
+                <m:Button text="작성완료" press="onClickPrint"/>
+            </layout:HorizontalLayout>
+            <m:Text id="printTxt" text="변경 전 : Will be updated."/>
+            <m:Button text="초기화" press="onClickReset"/>
+        </layout:VerticalLayout>
+    </m:Page>
 </mvc:View>
