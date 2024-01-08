@@ -1,0 +1,24 @@
+<mvc:View controllerName="project1708.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:t="sap.ui.table"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        
+        <t:Table
+            rows="{local>/history}"
+            selectionMode="MultiToggle"
+            paste="onPaste"
+            ariaLabelledBy="title">			
+            <t:columns>
+                <t:Column hAlign="End">
+                    <Label width="100%" textAlign="Center" text="Number1" />
+                    <t:template>
+                        <Text text="{local>num1}" wrapping="false" />
+                    </t:template>
+                </t:Column>
+                
+            </t:columns>
+        </t:Table>
+    </Page>
+</mvc:View>

@@ -2,5 +2,6 @@
     "name" : "Yang Su Jin",
     "age" : 23,
     "list": [ { "name" : "Yang Su Jin" } ],
-    "title" : "Sujin`s Page"
+    "title" : "Sujin`s Page",
+    "inpValue": "World"
 }
