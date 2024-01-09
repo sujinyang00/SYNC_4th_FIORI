@@ -1,0 +1,157 @@
+<mvc:View controllerName="odata.project1709.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m">
+    <f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}" toggleHeaderOnTitleClick="{/titleClickable}">
+			<!-- DynamicPage Title -->
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="Header Title"/>
+					</f:heading>
+                    <f:actions>
+                        <!-- <Button text="Search" type="Emphasized" press="onSearch"/> -->
+                    </f:actions>
+				</f:DynamicPageTitle>
+			</f:title>
+			<!-- DynamicPage Header -->
+			<f:header>
+				<f:DynamicPageHeader pinnable="true">
+                    <fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" filterContainerWidth="8rem" afterVariantLoad=".onAfterVariantLoad">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem name="OrderID" label="Order ID" groupName="Group1" visibleInFilterBar="true">
+								<fb:control>
+									<Input 
+										id="idOrderID" 
+										showValueHelp="true"
+										value="{search>/OrderID}"
+										valueHelpRequest="onValueHelpRequest"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="CustomerID" label="Customer ID" groupName="Group1" visibleInFilterBar="true">
+								<fb:control>
+									<Input 
+										id="idCustomerID" 
+										showValueHelp="true" 
+										value="{search>/CustomerID}"
+										valueHelpRequest="onValueHelpRequest"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="OrderDate" label="Order Date" groupName="Group1" visibleInFilterBar="true">
+								<fb:control>
+									<!-- <DatePicker id="idOrderDate" displayFormat="yyyy-MM-dd"/> -->
+									<!-- DatePicker 값 가져오기 .getDateValue() -->
+									<DateRangeSelection 
+										id="idOrderDate" 
+										dateValue="{search>/OrderDate_start}"
+										secondDateValue="{search>/OrderDate_end}"
+										displayFormat="yyyy-MM-dd"/>
+									<!-- DateRangeSelection 선택날짜 가져오기 (범위) 첫번째 값은 .getDateValue(), 두번째 값은 .getSecondDateValue() -->
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<!-- <layout:HorizontalLayout allowWrapping="true">
+						<layout:VerticalLayout class="sapUiMediumMarginEnd">
+                            <Label text="Order ID:"/>
+							<Input id="idOrderID" showValueHelp="true" valueHelpRequest="onValueHelpRequest"/>
+						</layout:VerticalLayout>
+
+						<layout:VerticalLayout class="sapUiMediumMarginEnd">
+                            <Label text="Customer ID:"/>
+							<Input id="idCustomerID" showValueHelp="true" valueHelpRequest="onValueHelpRequest"/>
+						</layout:VerticalLayout>
+
+						<layout:VerticalLayout>
+							<ObjectAttribute title="Availability"/>
+							<ObjectStatus text="In Stock" state="Success" />
+						</layout:VerticalLayout>
+					</layout:HorizontalLayout> -->
+				</f:DynamicPageHeader>
+			</f:header>
+			<f:content>
+				<Table id="idTable"
+						sticky="HeaderToolbar,ColumnHeaders"
+						inset="false"
+						items="{/Orders}"
+						mode="SingleSelectMaster"
+						selectionChange="onSelectionChange"
+					   	class="sapFDynamicPageAlignContent"
+					   	width="auto"
+					   >
+						<!-- items="{
+                            path: '/Orders',
+                            filters: [
+                                { path: 'CustomerID', operator: 'EQ', value1: 'VINET' }
+                            ],
+                            sorter: {path: 'EmployeeID', descending: false}
+                        }" -->
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Products" level="H2"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column
+								width="12em">
+							<Text text="OrderID" />
+						</Column>
+						<Column
+								width="12em">
+							<Text text="CustomerID" />
+						</Column>
+						<Column
+								width="12em">
+							<Text text="EmployeeID" />
+						</Column>                        
+						<Column
+								width="12em">
+							<Text text="OrderDate" />
+						</Column>
+						<Column
+								width="12em">
+							<Text text="RequiredDate" />
+						</Column>
+						<Column
+								width="12em">
+							<Text text="ShippedDate" />
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>								
+								<Text text="{OrderID}" />							
+								<Text text="{CustomerID}" />							
+								<Text text="{EmployeeID}" />							
+								<Text text="{
+                                    path : 'OrderDate',
+                                    formatter : '.fnDateToString'
+                                }" />
+								<Text text="{
+                                    path : 'RequiredDate',
+                                    formatter : '.fnDateToString'}" />							
+								<Text text="{
+                                    path : 'ShippedDate',
+                                    formatter : '.fnDateToString'}" />							
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</f:content>
+			<!-- DynamicPage Footer -->
+			<f:footer>
+				<OverflowToolbar>
+					<Button icon="sap-icon://message-popup"
+							text="{/messagesLength}"
+							type="Emphasized"
+							press="onMessageButtonPress"
+							visible="{= !!${/messagesLength}}"/>
+					<ToolbarSpacer/>
+					<Button type="Accept" text="Accept"/>
+					<Button type="Reject" text="Reject"/>
+				</OverflowToolbar>
+			</f:footer>
+		</f:DynamicPage>
+</mvc:View>

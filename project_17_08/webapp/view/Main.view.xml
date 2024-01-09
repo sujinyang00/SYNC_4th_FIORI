@@ -6,15 +6,50 @@
     <Page id="page" title="{i18n>title}">
         
         <t:Table
-            rows="{local>/history}"
+            rows="{/list}"
+            id="idTable"
             selectionMode="MultiToggle"
+            rowActionCount="1"
             paste="onPaste"
-            ariaLabelledBy="title">			
+            ariaLabelledBy="title">	
+            <!-- rowActionCount="1"로 설정 후 rowActionTemplate 설정 -->
+            <t:rowActionTemplate>
+                <t:RowAction >
+                    <t:items>
+                        <t:RowActionItem 
+                            icon="sap-icon://decline" type="Delete" press="onRowDelete"/>
+                    </t:items>
+                </t:RowAction>
+            </t:rowActionTemplate>
+            <t:extension>
+                <OverflowToolbar >
+                    <content>
+                        <Title text="Table" level="H2"/>
+                        <ToolbarSpacer />
+                        <Button 
+                            text="Add" 
+                            press="onAdd" 
+                            type="Emphasized" 
+                            icon="sap-icon://add"/>
+                        <Button 
+                            text="Delete" 
+                            press="onDelete" 
+                            type="Emphasized" 
+                            icon="sap-icon://delete"/>
+                    </content>
+                </OverflowToolbar>
+            </t:extension>
             <t:columns>
                 <t:Column hAlign="End">
                     <Label width="100%" textAlign="Center" text="Number1" />
                     <t:template>
-                        <Text text="{local>num1}" wrapping="false" />
+                        <Input value="{name}"/>
+                    </t:template>
+                </t:Column>
+                <t:Column hAlign="End">
+                    <Label width="100%" textAlign="Center" text="Number1" />
+                    <t:template>
+                        <Input value="{age}"/>
                     </t:template>
                 </t:Column>
                 
