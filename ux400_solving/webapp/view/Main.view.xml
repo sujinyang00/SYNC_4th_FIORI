@@ -12,7 +12,15 @@
 				type="Number"
 				change="onValueChange"
 				class="sapUiSmallMarginTopBottom"
-				/>
+				valueState="{
+					path: '/value',
+					formatter: '.fnInputValueState'
+				}"
+				valueStateText="{ 
+					path: '/value',
+					formatter: '.fnInputValueTextState'
+				 }"
+				/>				
             <Button text="Random" press="onRandomPress"/>
         </VBox>
 

@@ -7,7 +7,8 @@
     >
     <Page id="page" title="{i18n>title}">
         <content >
-
+            <viz:Popover id="idPopOver"/>
+            <!-- vizType을 pie로 -> 화면 오류 고쳐야 될듯 -->
             <viz:VizFrame id="idLineChart" width="400px" height="300px"
                 vizType="stacked_column"
                 uiConfig="{ 'applicationSet': 'fiori' }"

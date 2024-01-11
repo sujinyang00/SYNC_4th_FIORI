@@ -73,6 +73,20 @@ sap.ui.define([
                     else { return 'rgb(234, 52, 27)'; }
                 }
             },
+            fnInputValueState: function(sInput) {
+                if(sInput >= 1 && sInput<= 100){
+                    return 'None';
+                } else {
+                    return 'Error';
+                }
+            },
+            fnInputValueTextState: function(sInput) {
+                if(sInput >= 1 && sInput<= 100){
+                    return ;
+                } else {
+                    return '1이상 100이하의 수를 입력하세요';
+                }
+            },
 
             onValueChange: function(oEvent) {
                 var sInput = oEvent.getParameters().value;
@@ -94,7 +108,7 @@ sap.ui.define([
                     }
                 } else {
                     //입력창 상태를 빨간색 처리 및 값이 추가되지 않도록 합니다.
-                    alert('1 이상 100 이하인 수를 입력하세요. ');
+                    //alert('1 이상 100 이하인 수를 입력하세요. ');
                 }
 
             }

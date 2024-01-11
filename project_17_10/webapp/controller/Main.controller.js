@@ -25,6 +25,8 @@ sap.ui.define([
                 };
 
                 this.getView().setModel(new JSONModel(oData), "view");
+                var oPopOver = this.byId("idPopOver");
+                oPopOver.connect(this.byId("idLineChart").getVizUid()); //viz uid랑 popover랑 연결 - 아래 feed의 property 확인필요 (화면 안뜸)
 
                 this._setChartInContoller();
 
