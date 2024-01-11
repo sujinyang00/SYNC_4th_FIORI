@@ -1,0 +1,70 @@
+<c:FragmentDefinition xmlns:c="sap.ui.core" xmlns="sap.m">
+    <Dialog id="idCustomerDialog"
+            contentWidth="40%"
+            contentHeight="50%"
+            title="Customer Info"
+            draggable="false"
+            resizable="false">
+        <content>
+            <Table
+                    sticky="HeaderToolbar,ColumnHeaders"
+                    inset="false"
+                    items="{/Customers}"
+                    mode="SingleSelectMaster"
+                    selectionChange="onSelectionChange"
+                    class="sapFDynamicPageAlignContent"
+                    width="auto"
+                >
+                    <!-- items="{
+                        path: '/Orders',
+                        filters: [
+                            { path: 'CustomerID', operator: 'EQ', value1: 'VINET' }
+                        ],
+                        sorter: {path: 'EmployeeID', descending: false}
+                    }" -->
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Customers" level="H2"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column
+                            width="12em">
+                        <Text text="CustomerID" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="CompanyName" />
+                    </Column>                        
+                    <Column
+                            width="12em">
+                        <Text text="ContactName" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ContactTitle" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="Address" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>								
+                            <Text text="{CustomerID}" />							
+                            <Text text="{CompanyName}" />							
+                            <Text text="{ContactName}" />							
+                            <Text text="{ContactTitle}" />							
+                            <Text text="{Address}" />							                            							
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <endButton>
+            <Button text="close" icon="sap-icon://decline" 
+            press="onClose"/>
+        </endButton>
+    </Dialog>
+</c:FragmentDefinition>

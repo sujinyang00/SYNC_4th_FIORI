@@ -1,6 +1,7 @@
 <mvc:View controllerName="odata.project1709.controller.Main"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns:f="sap.f"
+	xmlns:c="sap.ui.core"
 	xmlns:fb="sap.ui.comp.filterbar"
     xmlns:layout="sap.ui.layout"
     xmlns="sap.m">
@@ -30,7 +31,8 @@
 										valueHelpRequest="onValueHelpRequest"/>
 								</fb:control>
 							</fb:FilterGroupItem>
-							<fb:FilterGroupItem name="CustomerID" label="Customer ID" groupName="Group1" visibleInFilterBar="true">
+
+							<fb:FilterGroupItem name="CustomerID" label="Customer ID" groupName="Group1" visibleInFilterBar="true">							
 								<fb:control>
 									<Input 
 										id="idCustomerID" 
@@ -38,7 +40,8 @@
 										value="{search>/CustomerID}"
 										valueHelpRequest="onValueHelpRequest"/>
 								</fb:control>
-							</fb:FilterGroupItem>
+							</fb:FilterGroupItem>							
+							
 							<fb:FilterGroupItem name="OrderDate" label="Order Date" groupName="Group1" visibleInFilterBar="true">
 								<fb:control>
 									<!-- <DatePicker id="idOrderDate" displayFormat="yyyy-MM-dd"/> -->
@@ -71,74 +74,79 @@
 					</layout:HorizontalLayout> -->
 				</f:DynamicPageHeader>
 			</f:header>
+			
 			<f:content>
-				<Table id="idTable"
-						sticky="HeaderToolbar,ColumnHeaders"
-						inset="false"
-						items="{/Orders}"
-						mode="SingleSelectMaster"
-						selectionChange="onSelectionChange"
-					   	class="sapFDynamicPageAlignContent"
-					   	width="auto"
-					   >
-						<!-- items="{
-                            path: '/Orders',
-                            filters: [
-                                { path: 'CustomerID', operator: 'EQ', value1: 'VINET' }
-                            ],
-                            sorter: {path: 'EmployeeID', descending: false}
-                        }" -->
-					<headerToolbar>
-						<Toolbar>
-							<Title text="Products" level="H2"/>
-						</Toolbar>
-					</headerToolbar>
-					<columns>
-						<Column
-								width="12em">
-							<Text text="OrderID" />
-						</Column>
-						<Column
-								width="12em">
-							<Text text="CustomerID" />
-						</Column>
-						<Column
-								width="12em">
-							<Text text="EmployeeID" />
-						</Column>                        
-						<Column
-								width="12em">
-							<Text text="OrderDate" />
-						</Column>
-						<Column
-								width="12em">
-							<Text text="RequiredDate" />
-						</Column>
-						<Column
-								width="12em">
-							<Text text="ShippedDate" />
-						</Column>
-					</columns>
-					<items>
-						<ColumnListItem>
-							<cells>								
-								<Text text="{OrderID}" />							
-								<Text text="{CustomerID}" />							
-								<Text text="{EmployeeID}" />							
-								<Text text="{
-                                    path : 'OrderDate',
-                                    formatter : '.fnDateToString'
-                                }" />
-								<Text text="{
-                                    path : 'RequiredDate',
-                                    formatter : '.fnDateToString'}" />							
-								<Text text="{
-                                    path : 'ShippedDate',
-                                    formatter : '.fnDateToString'}" />							
-							</cells>
-						</ColumnListItem>
-					</items>
-				</Table>
+				<VBox>				
+					<Table id="idTable"
+							sticky="HeaderToolbar,ColumnHeaders"
+							inset="false"
+							items="{/Orders}"
+							mode="SingleSelectMaster"
+							selectionChange="onSelectionChange"
+							class="sapFDynamicPageAlignContent"
+							width="auto"
+						>
+							<!-- items="{
+								path: '/Orders',
+								filters: [
+									{ path: 'CustomerID', operator: 'EQ', value1: 'VINET' }
+								],
+								sorter: {path: 'EmployeeID', descending: false}
+							}" -->
+						<headerToolbar>
+							<Toolbar>
+								<Title text="Products" level="H2"/>
+							</Toolbar>
+						</headerToolbar>
+						<columns>
+							<Column
+									width="12em">
+								<Text text="OrderID" />
+							</Column>
+							<Column
+									width="12em">
+								<Text text="CustomerID" />
+							</Column>
+							<Column
+									width="12em">
+								<Text text="EmployeeID" />
+							</Column>                        
+							<Column
+									width="12em">
+								<Text text="OrderDate" />
+							</Column>
+							<Column
+									width="12em">
+								<Text text="RequiredDate" />
+							</Column>
+							<Column
+									width="12em">
+								<Text text="ShippedDate" />
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>								
+									<Text text="{OrderID}" />							
+									<Text text="{CustomerID}" />							
+									<Text text="{EmployeeID}" />							
+									<Text text="{
+										path : 'OrderDate',
+										formatter : '.fnDateToString'
+									}" />
+									<Text text="{
+										path : 'RequiredDate',
+										formatter : '.fnDateToString'}" />							
+									<Text text="{
+										path : 'ShippedDate',
+										formatter : '.fnDateToString'}" />							
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+					<c:Fragment fragmentName="odata.project1709.view.fragment.Customer"/>
+					<c:Fragment fragmentName="odata.project1709.view.fragment.Orders"/>
+				</VBox>
 			</f:content>
 			<!-- DynamicPage Footer -->
 			<f:footer>

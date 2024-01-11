@@ -1,0 +1,123 @@
+<c:FragmentDefinition xmlns:c="sap.ui.core" xmlns="sap.m">
+    <Dialog id="idOrdersDialog"
+            contentWidth="40%"
+            contentHeight="50%"
+            title="Orders Info"
+            draggable="false"
+            resizable="false">
+        <content>
+            <Table id="idOrdersTable"
+                    sticky="HeaderToolbar,ColumnHeaders"
+                    inset="false"
+                    items="{local>/Orders}"
+                    mode="SingleSelectMaster"
+                    selectionChange="onSelectionChange"
+                    class="sapFDynamicPageAlignContent"
+                    width="auto"
+                >
+                    <!-- items="{
+                        path: '/Orders',
+                        filters: [
+                            { path: 'CustomerID', operator: 'EQ', value1: 'VINET' }
+                        ],
+                        sorter: {path: 'EmployeeID', descending: false}
+                    }" -->
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Products" level="H2"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column
+                            width="12em">
+                        <Text text="OrderID" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="CustomerID" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="EmployeeID" />
+                    </Column>                        
+                    <Column
+                            width="12em">
+                        <Text text="OrderDate" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="RequiredDate" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ShippedDate" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ShipVia" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="Freight" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ShipName" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ShipAddress" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ShipCity" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ShipRegion" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ShipPostalCode" />
+                    </Column>
+                    <Column
+                            width="12em">
+                        <Text text="ShipCountry" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>								
+                            <Text text="{local>OrderID}" />							
+                            <Text text="{local>CustomerID}" />							
+                            <Text text="{local>EmployeeID}" />							
+                            <Text text="{
+                                path : 'local>OrderDate',
+                                formatter : '.fnDateToString'
+                            }" />
+                            <Text text="{
+                                path : 'local>RequiredDate',
+                                formatter : '.fnDateToString'}" />							
+                            <Text text="{
+                                path : 'local>ShippedDate',
+                                formatter : '.fnDateToString'}" />	
+                            
+                            <Text text="{local>ShipVia}" />							
+                            <Text text="{local>Freight}" />							
+                            <Text text="{local>ShipName}" />							
+                            <Text text="{local>ShipAddress}" />							
+                            <Text text="{local>ShipCity}" />							
+                            <Text text="{local>ShipRegion}" />							
+                            <Text text="{local>ShipPostalCode}" />							
+                            <Text text="{local>ShipCountry}" />							
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <endButton>
+            <Button text="close" icon="sap-icon://decline" 
+            press="onClose"/>
+        </endButton>
+    </Dialog>
+</c:FragmentDefinition>

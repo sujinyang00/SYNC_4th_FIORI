@@ -2,12 +2,13 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/model/json/JSONModel"
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/Fragment"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, Filter, FilterOperator, JSONModel) {
+    function (Controller, Filter, FilterOperator, JSONModel, Fragment) {
         "use strict";
 
         return Controller.extend("odata.project1709.controller.Main", {
@@ -19,6 +20,8 @@ sap.ui.define([
                     OrderDate_end: null
                 };
                 this.getView().setModel(new JSONModel(oData), 'search'); //search모델 생성
+
+                
             },
 
             onSearch: function() {
@@ -42,46 +45,46 @@ sap.ui.define([
 
                         
                 //**************** 1️⃣ 필터 하나씩 추가 ************************/
-                // //방법1️⃣
-                // // if(sOrderId) {
-                // //     var oFilter = new Filter({
-                // //         path: 'OrderID', //필터 적용할 대상 필드명
-                // //         operator: FilterOperator.EQ, //연산자 "EQ" 라도 해도 됨 
-                // //         value1: sOrderId, //BT 의 경우 From
-                // //         value2: '' //BT의 경우 To
-                // //     });
-                // //     aFilter.push(oFilter);
-                // // }
+                //방법1️⃣
+                // if(sOrderId) {
+                //     var oFilter = new Filter({
+                //         path: 'OrderID', //필터 적용할 대상 필드명
+                //         operator: FilterOperator.EQ, //연산자 "EQ" 라도 해도 됨 
+                //         value1: sOrderId, //BT 의 경우 From
+                //         value2: '' //BT의 경우 To
+                //     });
+                //     aFilter.push(oFilter);                    
+                // }
                 // //방법2️⃣
                 // if(sOrderId){
                 //     aFilter.push(new Filter('OrderID', 'EQ', sOrderId));
                 // }
 
-                // //방법1️⃣
-                // // if(sCustomerId) {
-                // //     var oFilter = new Filter({
-                // //         path: 'CustomerID',
-                // //         operator: FilterOperator.Contains,
-                // //         value1: sCustomerId,
-                // //         value2: ''
-                // //     });
-                // //     aFilter.push(oFilter);
-                // // }
+                //방법1️⃣
+                // if(sCustomerId) {
+                //     var oFilter = new Filter({
+                //         path: 'CustomerID',
+                //         operator: FilterOperator.Contains,
+                //         value1: sCustomerId,
+                //         value2: ''
+                //     });
+                //     aFilter.push(oFilter);
+                // }
                 // //방법2️⃣
                 // if(sCustomerId) {
                 //     aFilter.push(new Filter('CustomerID', 'Contains', sCustomerId)); 
                 // }
 
                 // //방법1️⃣
-                // // // if(oStartDate && oEndDate) {
-                // // //     var oFilter = new Filter({
-                // // //         path: 'OrderDate',
-                // // //         operator: FilterOperator.BT,
-                // // //         value1: oStartDate,
-                // // //         value2: oEndDate
-                // // //     });
-                // // //     aFilter.push(oFilter);
-                // // // }                
+                // if(oStartDate && oEndDate) {
+                //     var oFilter = new Filter({
+                //         path: 'OrderDate',
+                //         operator: FilterOperator.BT,
+                //         value1: oStartDate,
+                //         value2: oEndDate
+                //     });
+                //     aFilter.push(oFilter);
+                // }                
                 
                 // //방법2️⃣
                 // if(oStartDate && oEndDate) {
@@ -98,6 +101,9 @@ sap.ui.define([
                 if(sOrderId) aFilter.push(new Filter('OrderID', 'EQ', sOrderId));
                 if(sCustomerId) aFilter.push(new Filter('CustomerID','Contains', sCustomerId));
                 if(oStartDate && oEndDate) aFilter.push(new Filter('OrderDate', 'BT', oStartDate, oEndDate));
+
+
+
 
                 if(aFilter){
                     this.byId("idTable").getBinding("items").filter(new Filter({
@@ -118,10 +124,54 @@ sap.ui.define([
                 var sPath = oEvent.getParameters().listItem.getBindingContextPath(); //상대 경로로 지정되어 있는 DataSet에서 사용자가 선택한 Row의 모델 경로 얻음
                 var oSelectData = this.getView().getModel().getProperty(sPath); //한 건의 model data - 모델경로로 해당 경로의 전체 데이터 얻음
 
-                alert(oSelectData.OrderID);
+                //alert(oSelectData.OrderID);
+
+                var oFormat = sap.ui.core.format.DateFormat.getDateInstance({
+                    pattern: 'yyyy-MM-dd'
+                });        
+
+                var oData = {
+                    Orders: [{
+                        OrderID: oSelectData.OrderID,
+                        CustomerID: oSelectData.CustomerID,
+                        EmployeeID: oSelectData.EmployeeID,
+                        OrderDate: oFormat.format(oSelectData.OrderDate), //데이터 포멧
+                        RequiredDate: oFormat.format(oSelectData.RequiredDate),
+                        ShippedDate: oFormat.format(oSelectData.ShippedDate),
+                        ShipVia: oSelectData.ShipVia,
+                        Freight: oSelectData.Freight,
+                        ShipName: oSelectData.ShipName,
+                        ShipAddress: oSelectData.ShipAddress,
+                        ShipCity: oSelectData.ShipCity,
+                        ShipRegion: oSelectData.ShipRegion,
+                        ShipPostalCode: oSelectData.ShipPostalCode,
+                        ShipCountry: oSelectData.ShipCountry
+                    }]
+                };
+
+                //local 모델 가져와
+                var oLocalModel = this.getView().getModel("local");
                 
+                //local 모델에 set
+                oLocalModel.setData(oData);
+                
+                this.getView().setModel(oLocalModel, "local");
+
+                console.log('local 모델의 data');
+                console.log(oLocalModel.getData());
+
+                this.byId("idOrdersTable").bindElement({
+                        path: '/Orders',
+                        model: 'local'
+                });
             
-            
+
+                //Dialog 호출
+                this.byId("idOrdersDialog").open();
+
+            },
+            onClose: function(oEvent) {
+                oEvent.getSource().getParent().close();
             },
 
 
@@ -133,10 +183,11 @@ sap.ui.define([
 
                     return oFormat.format(sValue); //2024-01-09 이런식으로
                 }
-
             },
             onValueHelpRequest: function() {
-                sap.m.MessageToast.show('팝업 오픈');
+                this.byId("idCustomerDialog").open();
+
+                //sap.m.MessageToast.show('팝업 오픈');
             }
         });
     });
