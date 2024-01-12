@@ -1,0 +1,14 @@
+<mvc:View controllerName="project1712.controller.NotFound"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <MessagePage 
+                title="Not Found"
+                text="Sorry, but the requested resource is not available." 
+                description="Please check the URL and try again."
+                showNavButton="true"
+                navButtonPress="onNavBack"/>
+        </content>
+    </Page>
+</mvc:View>

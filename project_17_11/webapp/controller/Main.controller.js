@@ -24,54 +24,54 @@ sap.ui.define([
 
                 this.getView().setModel(new JSONModel(oData), 'chart');
             
-                var oModel = this.getView().getModel();
-                this.getView().setModel(oModel);
 
 
-                //this._setChartInController();
+                this._setChartInController();
             },
 
             _setChartInController: function() {
-                var oModel = this.getView().getModel();
-                this.getView().setModel(oModel);
+                
 
                 //chart
                 var oColFrame = this.byId("idChartContainer");
 
                 //dataset
                 var oColDataset = new FlattenedDataset({
-                    dimension: [
-                        { name: 'Products', value: '{/ProductName}' }
+                    dimensions: [
+                        { 
+                            name: 'Products', 
+                            value: '{ProductName}' 
+                        }
                     ],
                     measures: [
-                        { name: 'Stock', value: '{/UnitsInStock}' },
-                        { name: 'Order', value: '{/UnitsOnOrder}' }
-
+                        { name: 'Stock', value: '{UnitsInStock}' },
+                        { name: 'Order', value: '{UnitsOnOrder}' }
                     ],
                     data: { //기준 경로 세팅
                         path: '/Products'
                     }
                 });
-                oColDataset.setDataset(oColDataset);
+                oColFrame.setDataset(oColDataset);
 
                 //feed구성
-                var feedColValueAxis = new FeedItem({
-                    uid: 'valueAxis',
-                    type: 'Measure',
-                    values: ['Products']
-                });
                 var feedColCategoryAxis = new FeedItem({
                     uid: 'categoryAxis',
                     type: 'Dimension',
-                    values: ['Stock', 'Order']
+                    values: ['Products']
                 });
-                oColFrame.addFeed(feedColValueAxis);
+                var feedColValueAxis = new FeedItem({
+                    uid: 'valueAxis',
+                    type: 'Measure',
+                    values: ['Stock','Order']
+                    
+                });
                 oColFrame.addFeed(feedColCategoryAxis);
+                oColFrame.addFeed(feedColValueAxis);
 
                 //chart의 속성을 controller에서 세팅
-                oColFrame.setVizProperties({
-                    title: {text: 'controller로 구성한 Viz차트'}
-                });
+                // oColFrame.setVizProperties({
+                //     title: {text: 'controller로 구성한 Viz차트'}
+                // });
 
             }
 

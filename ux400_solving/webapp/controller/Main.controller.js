@@ -23,11 +23,11 @@ sap.ui.define([
                 sInput.setValue(random);
                 this.getView().getModel().setProperty('/value',sInput);
 
-                debugger;
+                //debugger;
                 // console.log(this.getView().getModel().getProperty('/value'));
 
                 var oModel = this.getView().getModel("numbers"); 
-                if (!oModel){ //생성된 적이 없으먼 
+                if (!oModel) { //생성된 적이 없으먼 
                     //초기 model 세팅
                     var oNewModel = new JSONModel({
                         list : [

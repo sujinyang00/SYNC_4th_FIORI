@@ -21,7 +21,17 @@ sap.ui.define([
                 };
                 this.getView().setModel(new JSONModel(oData), 'search'); //search모델 생성
 
+
+                //Router
+                this.oRouter = this.getOwnerComponent().getRouter();
+                this.oRouter.getRoute("RouteMain").attachPatternMatched(this._onPatternMatched, this);
+
                 
+            },
+            _onPatternMatched: function(oEvent) {
+                var oArgu = oEvent.getParameters().arguments;
+
+                // console.log(oArgu);
             },
 
             onSearch: function() {
@@ -167,7 +177,13 @@ sap.ui.define([
             
 
                 //Dialog 호출
-                this.byId("idOrdersDialog").open();
+                //this.byId("idOrdersDialog").open();
+
+                //Detail page 이동 
+                this.oRouter.navTo('RouteDetail',{
+                    oid: oSelectData.OrderID
+                }, true);
+
 
             },
             onClose: function(oEvent) {

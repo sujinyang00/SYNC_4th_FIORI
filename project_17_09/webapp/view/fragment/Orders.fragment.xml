@@ -117,7 +117,7 @@
         </content>
         <endButton>
             <Button text="close" icon="sap-icon://decline" 
-            press="onClose"/>
+                press="onClose"/>
         </endButton>
     </Dialog>
 </c:FragmentDefinition>

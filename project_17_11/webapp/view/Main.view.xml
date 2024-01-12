@@ -27,9 +27,12 @@
                         icon="sap-icon://vertical-bar-chart"
                         title="Chart">
                         <commons:content>
-                            <!-- <viz:VizFrame id="idChartContainer" vizType="stacked_column"/> -->
+                            <viz:VizFrame id="idChartContainer" 
+                                width="640px" height="480px"
+                                uiConfig="{ 'applicationSet': 'fiori' }"
+                                vizType="stacked_column"/>
 
-                            <viz:VizFrame id="idStackChart"
+                            <!-- <viz:VizFrame id="idStackChart"
                                 width="640px" height="480px"
                                 uiConfig="{ 'applicationSet': 'fiori' }"
                                 vizProperties="{
@@ -45,8 +48,7 @@
                                 }"
                                 vizType="stacked_column">
                                 <viz:dataset>
-                                    <viz.data:FlattenedDataset 
-                                        data="{/Products}">
+                                    <viz.data:FlattenedDataset data="{/Products}">
                                         <viz.data:dimensions>
                                             <viz.data:DimensionDefinition name="ProductName" value="{ProductName}"/>
                                         </viz.data:dimensions>
@@ -61,10 +63,9 @@
                                 <viz:feeds>
                                     <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="ProductName" />                           
                                     <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Stock,Order" />
-                                </viz:feeds>
-  
-                            </viz:VizFrame>
-        
+                                </viz:feeds>  
+                            </viz:VizFrame>  -->
+
                         </commons:content>
                     </commons:ChartContainerContent>    
 
