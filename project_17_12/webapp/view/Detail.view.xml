@@ -1,7 +1,9 @@
 <mvc:View controllerName="project1712.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true" 
     xmlns="sap.m">
-    <Page id="page" title="{i18n>title}" showNavButton="true" navButtonPress="onNavBack">
+    <Page id="page" title="{i18n>title}" 
+        showNavButton="true"
+        navButtonPress="onNavBack">
         <Text text="Detail page"/>
     </Page>
 </mvc:View>

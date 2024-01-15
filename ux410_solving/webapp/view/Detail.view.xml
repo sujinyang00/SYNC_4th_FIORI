@@ -1,0 +1,76 @@
+<mvc:View controllerName="sap.btp.ux410solving.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:ux="sap.uxap"
+    xmlns:core="sap.ui.core" 
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}"
+        showNavButton="true"
+        navButtonPress="onNavBack">
+        <content>
+            <ux:ObjectPageLayout id="ObjectPageLayout">
+                <ux:headerTitle>
+                    <ux:ObjectPageHeader 
+                        id="obTitle" 
+                        objectSubtitle="Order Detail View Details"
+                        objectTitle="OrderID : "/>            
+                    
+                </ux:headerTitle>
+
+                <ux:sections>
+                    <ux:ObjectPageSection titleUppercase="false" title="example">
+                        <ux:subSections>
+
+                            <ux:ObjectPageSubSection title="Info" titleUppercase="false">
+                                <ux:blocks>
+                                    
+                                    <VBox class="sapUiSmallMargin">
+                                        <f:SimpleForm id="idSimpleForm"
+                                            editable="true"
+                                            layout="ResponsiveGridLayout"
+                                            labelSpanXL="3"
+                                            labelSpanL="3"
+                                            labelSpanM="3"
+                                            labelSpanS="12"
+                                            adjustLabelSpan="false"
+                                            emptySpanXL="4"
+                                            emptySpanL="4"
+                                            emptySpanM="4"
+                                            emptySpanS="0"
+                                            columnsXL="1"
+                                            columnsL="1"
+                                            columnsM="1"
+                                            singleContainerFullSize="false" >
+                                            <f:content>
+                                                <Label text="OrderID" />
+                                                <Text id="orderId"/>
+
+                                                <Label text="ProductID" />
+                                                <Text text="{ProductID}"/>
+
+                                                <Label text="UnitPrice" />
+                                                <Text text="{UnitPrice}"/>
+
+                                                <Label text="Quantity" />
+                                                <Text text="{Quantity}"/>
+
+                                                <Label text="Discount" />
+                                                <Text text="{Discount}"/>
+
+
+                                            </f:content>
+                                        </f:SimpleForm>
+                                    </VBox>
+
+
+                                </ux:blocks>
+                            </ux:ObjectPageSubSection>
+                        </ux:subSections>
+                    </ux:ObjectPageSection>
+                </ux:sections>
+            </ux:ObjectPageLayout>
+
+            
+        </content>
+    </Page>
+</mvc:View>

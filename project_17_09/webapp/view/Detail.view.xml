@@ -49,12 +49,16 @@
                             </f:FormElement>						
                             <f:FormElement label="RequiredDate">
                                 <f:fields>
-                                    <Text text="{RequiredDate}"/>
+                                    <Text text="{
+                                        path: 'RequiredDate',
+                                        formatter: '.fnDateFormatter'}"/>
                                 </f:fields>
                             </f:FormElement>						
                             <f:FormElement label="ShippedDate">
                                 <f:fields>
-                                    <Text text="{ShippedDate}"/>
+                                    <Text text="{
+                                        path: 'ShippedDate',
+                                        formatter: '.fnDateFormatter'}"/>
                                 </f:fields>
                             </f:FormElement>						
                             <f:FormElement label="ShipVia">
