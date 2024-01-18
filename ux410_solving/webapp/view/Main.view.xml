@@ -50,11 +50,13 @@
 								<fb:FilterGroupItem name="Type" label="Type" groupName="Group2" visibleInFilterBar="true">
 									<fb:control>
 										<ComboBox
+                                            required="true"
 											name="Type"
                                             id="idCombo2"
+                                            value="bar"
 											items="{
 												path: 'typeList>/type',
-												templateShareable: true
+												templateShareable: true                                    
 											}"
 										>
 											<core:ListItem key="{typeList>typeName}" text="{typeList>typeName}"/>

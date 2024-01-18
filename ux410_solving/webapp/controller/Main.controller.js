@@ -50,16 +50,33 @@ sap.ui.define([
                 
                 oModel.setData(oData);
 
-                var sType = 'bar';
-                if(sType) sType = this.byId("idCombo2").getSelectedItem().getText();
-                // console.log(oTypeList.typeName);
-                this.byId("idBarChart").setVizType(sType);
-                
-                
-                if(sOrderId) {
-                    aFilter.push(new Filter('OrderID', FilterOperator.EQ, sOrderId));                    
-                    this.byId("idBarChart").getDataset().getBinding("data").filter(new Filter(aFilter));
+
+                if (this.byId("idCombo2").getValue()) {
+                    this.byId("idCombo2").setValueState('None');
+                    
+                    if(this.byId("idCombo2").getSelectedItem()){
+                        console.log("viz selected type: ",this.byId("idCombo2").getSelectedItem().getText());                    
+                        var sType = this.byId("idCombo2").getSelectedItem().getText();
+                        this.byId("idBarChart").setVizType(sType);
+                    } else {
+                        console.log("viz type: ",this.byId("idCombo2").getValue());
+                    }
+
+                    // filter 적용 부분
+                    if(sOrderId) {
+                        aFilter.push(new Filter('OrderID', FilterOperator.EQ, sOrderId));                    
+                        this.byId("idBarChart").getDataset().getBinding("data").filter(new Filter(aFilter));
+                    }
+                    
+                } else {
+                    console.log("viz type: ");
+                    this.byId("idCombo2").setValueState('Error');
+                    this.byId("idCombo2").setValueStateText('Invalid entry. 필수값 선택하세요.');
                 }
+
+                
+                
+                
 
             },
             onDatasetSelected: function(oEvent) {  
