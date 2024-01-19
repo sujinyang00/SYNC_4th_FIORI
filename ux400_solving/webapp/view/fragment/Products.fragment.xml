@@ -13,6 +13,7 @@
             <t:Table 
                 rows="{/Products}"
                 selectionMode="MultiToggle"
+                rowActionCount="1"
                 paste="onPaste"
                 ariaLabelledBy="title">
                 <t:extension>
@@ -22,11 +23,12 @@
                 </t:extension>
                 <t:columns>
                     <t:Column width="11rem">
-                        <Label text="ProductID"/>
+                        <Label textAlign="Center" text="ProductID" />
                         <t:template>
-                            <Text text="{ProductID}"/>
+                            <Text text="{ProductID}" />
                         </t:template>
                     </t:Column>
+                    
                     <t:Column width="11rem">
                         <Label text="ProductName"/>
                         <t:template>

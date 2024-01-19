@@ -81,6 +81,8 @@ sap.ui.define([
             },
             onDatasetSelected: function(oEvent) {  
                
+                debugger;
+                
                 var sOrderId = oEvent.getParameters().data[0].data.OrderID;
                 var sProductId = oEvent.getParameters().data[0].data.ProductID;
                 

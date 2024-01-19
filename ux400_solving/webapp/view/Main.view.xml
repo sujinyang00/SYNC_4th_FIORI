@@ -12,14 +12,6 @@
 				type="Number"
 				change="onValueChange"
 				class="sapUiSmallMarginTopBottom"
-				valueState="{
-					path: '/value',
-					formatter: '.fnInputValueState'
-				}"
-				valueStateText="{ 
-					path: '/value',
-					formatter: '.fnInputValueTextState'
-				 }"
 				/>				
             <Button text="Random" press="onRandomPress"/>
         </VBox>
@@ -45,7 +37,7 @@
 					</t:Column>					
 				</t:columns>
 			</t:Table>
-            <c:Fragment fragmentName="sap.btp.ux400solving.view.fragment.Products"/>
+            <c:Fragment fragmentName="sap.btp.ux400solving.view.fragment.Products" />
         
             <Button text="Open Products" press="onClickDialog"/>
         

@@ -14,14 +14,18 @@ sap.ui.define([
                     value: '0'
                 });
                 this.getView().setModel(sInput);
-                
+
+
+                this.byId("idInput").setValueState('Error');
+                this.byId("idInput").setValueStateText('숫자를 입력해야 됩니다. ');
             },
 
             onRandomPress: function() {
                 var sInput = this.byId("idInput");            
                 var random = Math.floor(Math.random() * 100) + 1;
                 sInput.setValue(random);
-                this.getView().getModel().setProperty('/value',sInput);
+                this.getView().getModel().setProperty('/value',sInput);          
+                
 
                 //debugger;
                 // console.log(this.getView().getModel().getProperty('/value'));
@@ -73,43 +77,40 @@ sap.ui.define([
                     else { return 'rgb(234, 52, 27)'; }
                 }
             },
-            fnInputValueState: function(sInput) {
-                if(sInput >= 1 && sInput<= 100){
-                    return 'None';
-                } else {
-                    return 'Error';
-                }
-            },
-            fnInputValueTextState: function(sInput) {
-                if(sInput >= 1 && sInput<= 100){
-                    return ;
-                } else {
-                    return '1이상 100이하의 수를 입력하세요';
-                }
-            },
 
             onValueChange: function(oEvent) {
+
                 var sInput = oEvent.getParameters().value;
-                
-                if(sInput >= 1 && sInput<= 100){
-                    var oModel = this.getView().getModel("numbers");
-                    if(!oModel){
-                        var oNewModel = new JSONModel({
-                            list : [
-                                { num: sInput }
-                            ]
-                        });
-                        this.getView().setModel(oNewModel, "numbers");
+
+                if (sInput) {
+                    if(sInput >= 1 && sInput <= 100){                        
+                        this.byId("idInput").setValueState('None');  
+                        var oModel = this.getView().getModel("numbers");
+                        if(!oModel){
+                            var oNewModel = new JSONModel({
+                                list : [
+                                    { num: sInput }
+                                ]
+                            });
+                            this.getView().setModel(oNewModel, "numbers");
+                        } else {
+                            var aHistory = oModel.getProperty("/list") || [];
+                            var newEntry = { num: sInput };
+                            aHistory.push(newEntry);
+                            oModel.setData(aHistory, true);
+                        }                      
                     } else {
-                        var aHistory = oModel.getProperty("/list") || [];
-                        var newEntry = { num: sInput };
-                        aHistory.push(newEntry);
-                        oModel.setData(aHistory, true);
+
+                        this.byId("idInput").setValueState('Error');
+                        this.byId("idInput").setValueStateText('1이상 100이하의 수를 입력하세요');
                     }
                 } else {
-                    //입력창 상태를 빨간색 처리 및 값이 추가되지 않도록 합니다.
-                    //alert('1 이상 100 이하인 수를 입력하세요. ');
+                    this.byId("idInput").setValueState('Error');
+                    this.byId("idInput").setValueStateText('숫자를 입력해야 됩니다. ');
                 }
+                
+                
+                
 
             }
         });

@@ -1,0 +1,63 @@
+<c:FragmentDefinition 
+    xmlns:t="sap.ui.table"
+    xmlns:c="sap.ui.core" 
+    xmlns="sap.m">
+    
+    <Dialog id="idDialog"   
+            contentWidth="40%"
+            contentHeight="50%"
+            title="Products"
+            draggable="false"
+            resizable="false">
+        <content>
+            <!-- <Text text="hi"></Text> -->
+            <t:Table
+                rows="{popup>/results}"
+                selectionMode="Single"
+                selectionBehavior="RowOnly"
+                paste="onPaste"
+                ariaLabelledBy="title">
+                
+                <t:columns>
+                    <t:Column width="11rem">
+                        <Label text="Productno" />
+                        <t:template>
+                            <Text text="{popup>Productno}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                    <t:Column width="11rem">
+                        <Label text="Productname" />
+                        <t:template>
+                            <Text text="{popup>Productname}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                    <t:Column width="11rem">
+                        <Label text="Fname" />
+                        <t:template>
+                            <Text text="{popup>Fname}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                    <t:Column width="11rem">
+                        <Label text="Lname" />
+                        <t:template>
+                            <Text text="{popup>Lname}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                    <t:Column width="11rem">
+                        <Label text="Memo" />
+                        <t:template>
+                            <Text text="{popup>Memo}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                </t:columns>
+            </t:Table>
+        </content>
+
+
+
+        <endButton>
+            <Button text="close" icon="sap-icon://decline" 
+            press="onCloseDialog"/>
+        </endButton>
+    </Dialog>
+</c:FragmentDefinition>

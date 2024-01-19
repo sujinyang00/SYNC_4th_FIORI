@@ -1,4 +1,4 @@
-<mvc:View controllerName="opdata.project1713.controller.Main"
+<mvc:View controllerName="project1714.controller.Main"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns:c="sap.ui.core"
     xmlns:t="sap.ui.table"
@@ -8,37 +8,30 @@
         <content>
 
         <l:Grid
-            binding="{/data}"
             class="sapUiSmallMarginTop"
             hSpacing="2"
             defaultSpan="XL6 L6 M6 S10">
             <l:content>
-                <Input description="Product Num" 
-                    value="{data>/Productno}">
+                <Input description="Memid"
+                    value="{data>/Memid}">
                     <layoutData>
                         <l:GridData span="XL4 L4 M6 S12"/>
                     </layoutData>
                 </Input>
-                <Input description="Product Name"
-                    value="{data>/Productname}">
+                <Input description="Memnm"
+                    value="{data>/Memnm}">
                     <layoutData>
                         <l:GridData span="XL4 L4 M6 S12"/>
                     </layoutData>
                 </Input>
-                <Input description="First Name"
-                    value="{data>/Fname}">
+                <Input description="Tel no"
+                    value="{data>/Telno}">
                     <layoutData>
                         <l:GridData span="XL4 L4 M6 S12"/>
                     </layoutData>
                 </Input>
-                <Input description="Last Name"
-                    value="{data>/Lname}">
-                    <layoutData>
-                        <l:GridData span="XL4 L4 M6 S12"/>
-                    </layoutData>
-                </Input>
-                <Input description="Memo"
-                    value="{data>/Memo}">
+                <Input description="Email"
+                    value="{data>/Email}">
                     <layoutData>
                         <l:GridData span="XL4 L4 M6 S12"/>
                     </layoutData>
@@ -50,7 +43,7 @@
 
 
         <t:Table
-            rows="{/Products}"
+            rows="{/Member}"
             id="idTable"
             rowSelectionChange="onRowSelectionChange"
             selectionMode="Single"
@@ -70,44 +63,32 @@
                 </OverflowToolbar>
             </t:extension>
             <t:columns>
-                <t:Column filterProperty="Productno" width="11rem">
-                    <Label text="Productno" />
+                <t:Column width="11rem">
+                    <Label text="Memid" />
                     <t:template>
-                        <Text text="{Productno}" wrapping="false" />
+                        <Text text="{Memid}" wrapping="false" />
                     </t:template>
                 </t:Column>					
-                <t:Column filterProperty="Productname" width="11rem">
-                    <Label text="Productname" />
+                <t:Column width="11rem">
+                    <Label text="Memnm" />
                     <t:template>
-                        <Text text="{Productname}" wrapping="false" />
+                        <Text text="{Memnm}" wrapping="false" />
                     </t:template>						
                 </t:Column>					
-                <t:Column filterProperty="Fname" width="11rem">
-                    <Label text="Fname" />
+                <t:Column width="11rem">
+                    <Label text="Telno" />
                     <t:template>
-                        <Text text="{Fname}" wrapping="false" />
+                        <Text text="{Telno}" wrapping="false" />
                     </t:template>												
                 </t:Column>					
-                <t:Column filterProperty="Lname" width="11rem">
-                    <Label text="Lname" />
+                <t:Column width="11rem">
+                    <Label text="Email" />
                     <t:template>
-                        <Text text="{Lname}" wrapping="false" />
+                        <Text text="{Email}" wrapping="false" />
                     </t:template>																		
-                </t:Column>					
-                <t:Column filterProperty="Memo" width="11rem">
-                    <Label text="Memo" />
-                    <t:template>
-                        <Text text="{Memo}" wrapping="false" />
-                    </t:template>												
-                </t:Column>					
+                </t:Column>			
             </t:columns>
         </t:Table>
-
-
-        <c:Fragment fragmentName="opdata.project1713.view.fragment.Detail"/>
-
-
-
         </content>
     </Page>
 </mvc:View>

@@ -1,7 +1,7 @@
 {
   "_version": "1.59.0",
   "sap.app": {
-    "id": "opdata.project1713",
+    "id": "project1714",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,11 +13,11 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
       "version": "1.12.1",
-      "toolsId": "98628d5f-3a7a-4fe2-a022-3a70d94f2788"
+      "toolsId": "4cd3d52a-3a2f-4b32-a593-0344d5412afd"
     },
     "dataSources": {
       "mainService": {
-        "uri": "/sap/opu/odata/sap/ZCL2_PRODUCT_CDS/",
+        "uri": "/sap/opu/odata/sap/ZGWMEMBER_SB17_SRV/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -66,7 +66,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "opdata.project1713.i18n.i18n"
+          "bundleName": "project1714.i18n.i18n"
         }
       },
       "": {
@@ -87,7 +87,7 @@
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
         "async": true,
-        "viewPath": "opdata.project1713.view",
+        "viewPath": "project1714.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
@@ -112,7 +112,7 @@
       }
     },
     "rootView": {
-      "viewName": "opdata.project1713.view.App",
+      "viewName": "project1714.view.App",
       "type": "XML",
       "async": true,
       "id": "App"
