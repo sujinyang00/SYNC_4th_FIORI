@@ -1,6 +1,6 @@
 specVersion: "3.1"
 metadata:
-  name: odata.project1709
+  name: practice1700
 type: application
 server:
   customMiddleware:
@@ -16,7 +16,7 @@ server:
         backend:
           - path: /northwind
             url: https://services.odata.org
-          - path: /sap/opu/odata/sap/ZCL2_PRODUCT_CDS/
+          - path: /sap
             url: http://edu.bgis.co.kr:8001/
             client: "100"
     - name: fiori-tools-appreload
@@ -40,3 +40,7 @@ server:
             generateMockData: true
             metadataXmlPath: ./webapp/localService/mainService/metadata.xml
             mockdataRootPath: ./webapp/localService/data
+          - urlPath: /sap/opu/odata/sap/ZCL2_PRODUCT_CDS
+            metadataXmlPath: ./webapp/localService/ZCL2_PRODUCT_CDS/metadata.xml
+            mockdataRootPath: ./webapp/localService/ZCL2_PRODUCT_CDS/mockdata
+            generateMockData: true

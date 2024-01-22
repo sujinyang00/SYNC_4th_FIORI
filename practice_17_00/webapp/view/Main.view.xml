@@ -1,0 +1,73 @@
+<mvc:View controllerName="practice1700.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+
+       <Panel headerText="프로젝트2 - 계산기 테이블" expandable="true" expanded="false">
+        <l:VerticalLayout class="sapUiContentPadding">
+            <Title text="계산기 프로그램 with ui Table"/>    
+            <Input width="50%" id="idInput1"/>
+            <ComboBox width="50%" id="idCombobox" items="{/opers}" showSecondaryValues="true">
+                <core:ListItem key="{key}" text="{text}" additionalText = "{addTxt}"/>
+			</ComboBox>
+            <Input width="50%" id="idInput2"/>
+            
+            <Button width="50%" text="계산" press="onCal"/>
+            <Button width="50%" text="전체 삭제" press="onDel"/>
+
+            <ToolbarSpacer />
+
+
+            <t:Table
+                rows="{cal>/calResult}"
+                selectionMode="MultiToggle"
+                paste="onPaste"
+                ariaLabelledBy="title">
+                <t:columns>
+                    <t:Column width="11rem">
+                        <Label text="Num1" />
+                        <t:template>
+                            <Text text="{cal>num1}" wrapping="false" />
+                        </t:template>
+                    </t:Column>    					
+                    <t:Column width="11rem">
+                        <Label text="Operator" />
+                        <t:template>
+                            <Text text="{cal>oper}" wrapping="false" />
+                        </t:template>
+                    </t:Column>    					
+                    <t:Column width="11rem">
+                        <Label text="Num2" />
+                        <t:template>
+                            <Text text="{cal>num2}" wrapping="false" />
+                        </t:template>
+                    </t:Column>    					
+                    <t:Column width="11rem">
+                        <Label text="Result" />
+                        <t:template>
+                            <Text text="{cal>result}" wrapping="false" />
+                        </t:template>
+                    </t:Column>    					
+                    <t:Column width="11rem">
+                        <Label text="Status" />
+                        <t:template>
+                        <core:Icon 
+                            src="{= ${cal>result} > 100 ? 'sap-icon://arrow-top' : 'sap-icon://arrow-bottom'}"
+                            color="{= ${cal>result} > 100 ? '#B7F0B1' : '#FFA7A7' }"
+                            />
+                            <!-- <Text text="{cal>result}" wrapping="false" /> -->
+                        </t:template>
+                    </t:Column>    					
+                </t:columns>
+            </t:Table>
+
+
+
+        </l:VerticalLayout>       
+        </Panel>
+
+    </Page>
+</mvc:View>

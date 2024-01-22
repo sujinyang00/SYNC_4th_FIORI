@@ -1,7 +1,7 @@
 {
     "_version": "1.59.0",
     "sap.app": {
-        "id": "odata.project1709",
+        "id": "practice1700",
         "type": "application",
         "i18n": "i18n/i18n.properties",
         "applicationVersion": {
@@ -13,7 +13,7 @@
         "sourceTemplate": {
             "id": "@sap/generator-fiori:basic",
             "version": "1.12.1",
-            "toolsId": "2bfa9c27-eb37-435e-a3f0-3b55ab9ad674"
+            "toolsId": "bdc5596f-11c7-4394-b739-fc2b7465a99a"
         },
         "dataSources": {
             "mainService": {
@@ -22,6 +22,24 @@
                 "settings": {
                     "annotations": [],
                     "localUri": "localService/mainService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            },
+            "ZCL2_PRODUCT_CDS_Annotation": {
+                "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZCL2_PRODUCT_CDS_VAN',Version='0001')/$value/",
+                "type": "ODataAnnotation",
+                "settings": {
+                    "localUri": "localService/ZCL2_PRODUCT_CDS/ZCL2_PRODUCT_CDS_Annotation.xml"
+                }
+            },
+            "ZCL2_PRODUCT_CDS": {
+                "uri": "/sap/opu/odata/sap/ZCL2_PRODUCT_CDS",
+                "type": "OData",
+                "settings": {
+                    "annotations": [
+                        "ZCL2_PRODUCT_CDS_Annotation"
+                    ],
+                    "localUri": "localService/ZCL2_PRODUCT_CDS/metadata.xml",
                     "odataVersion": "2.0"
                 }
             }
@@ -66,7 +84,7 @@
             "i18n": {
                 "type": "sap.ui.model.resource.ResourceModel",
                 "settings": {
-                    "bundleName": "odata.project1709.i18n.i18n"
+                    "bundleName": "practice1700.i18n.i18n"
                 }
             },
             "": {
@@ -74,8 +92,17 @@
                 "preload": true,
                 "settings": {}
             },
-            "local": {
-                "type": "sap.ui.model.json.JSONModel"
+            "ZCL2_PRODUCT_CDS": {
+                "dataSource": "ZCL2_PRODUCT_CDS",
+                "preload": true,
+                "settings": {
+                    "defaultBindingMode": "TwoWay",
+                    "defaultCountMode": "Inline",
+                    "refreshAfterChange": false,
+                    "metadataUrlParams": {
+                        "sap-value-list": "none"
+                    }
+                }
             }
         },
         "resources": {
@@ -90,7 +117,7 @@
                 "routerClass": "sap.m.routing.Router",
                 "viewType": "XML",
                 "async": true,
-                "viewPath": "odata.project1709.view",
+                "viewPath": "practice1700.view",
                 "controlAggregation": "pages",
                 "controlId": "app",
                 "clearControlAggregation": false
@@ -102,13 +129,6 @@
                     "target": [
                         "TargetMain"
                     ]
-                },
-                {
-                    "name": "RouteDetail",
-                    "pattern": "detail/{oid}",
-                    "target": [
-                        "TargetDetail"
-                    ]
                 }
             ],
             "targets": {
@@ -118,18 +138,11 @@
                     "clearControlAggregation": false,
                     "viewId": "Main",
                     "viewName": "Main"
-                },
-                "TargetDetail": {
-                    "viewType": "XML",
-                    "transition": "slide",
-                    "clearControlAggregation": false,
-                    "viewId": "Detail",
-                    "viewName": "Detail"
                 }
             }
         },
         "rootView": {
-            "viewName": "odata.project1709.view.App",
+            "viewName": "practice1700.view.App",
             "type": "XML",
             "async": true,
             "id": "App"

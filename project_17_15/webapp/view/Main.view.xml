@@ -1,0 +1,9 @@
+<mvc:View controllerName="project1715.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Text text="Fiori Launchpad 배포 연습"/>
+        </content>
+    </Page>
+</mvc:View>

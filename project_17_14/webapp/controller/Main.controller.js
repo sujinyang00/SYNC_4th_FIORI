@@ -167,6 +167,9 @@ sap.ui.define([
                     Memnm: oJSONData.Memnm,
                     Telno: oJSONData.Telno,
                     Email: oJSONData.Email
+                    // WorkSet: [
+                    //     {},{},{}, ...
+                    // ]
                 };
 
                 oDataModel.create("/Member", oBody, {
