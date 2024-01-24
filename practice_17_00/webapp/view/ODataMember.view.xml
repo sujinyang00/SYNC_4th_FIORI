@@ -1,0 +1,14 @@
+<mvc:View controllerName="practice1700.controller.ODataMember"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+    xmlns:c="sap.ui.core"
+    xmlns:t="sap.ui.table"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns="sap.m">
+        
+    
+	<Text text="this is new page."/>
+
+
+</mvc:View>

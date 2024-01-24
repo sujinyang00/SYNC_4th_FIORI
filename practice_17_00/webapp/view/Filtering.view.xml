@@ -1,0 +1,118 @@
+<mvc:View controllerName="practice1700.controller.Filtering"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+    xmlns:c="sap.ui.core"
+    xmlns:t="sap.ui.table"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns="sap.m">
+        
+    <f:DynamicPage headerExpanded="{/headerExpanded}">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+                        <Title text="Header Title"/>
+					</f:heading>
+				</f:DynamicPageTitle>
+			</f:title>
+			<f:header>
+				<f:DynamicPageHeader>
+					<f:content>
+						<fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem name="OrderID" label="OrderID" groupName="Group1" visibleInFilterBar="true">
+									<fb:control>
+                                        <Input 
+                                            id="idFilterOrderID" 
+                                            showValueHelp="true"
+                                            value="{search>/OrderID}"
+                                            valueHelpRequest="onValueHelpRequest"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem name="CustomerID" label="CustomerID" groupName="Group1" visibleInFilterBar="true">
+									<fb:control>
+										<Input 
+                                            id="idFilterCustomerID" 
+                                            showValueHelp="true"
+                                            value="{search>/CustomerID}"
+                                            valueHelpRequest="onValueHelpRequest"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem name="OrderDate" label="OrderDate" groupName="Group1" visibleInFilterBar="true">
+									<fb:control>
+										<DateRangeSelection
+                                            id="idFilterOrderDate" 
+                                            dateValue="{search>/OrderDate_start}"
+                                            secondDateValue="{search>/OrderDate_end}"
+                                            displayFormat="yyyy-MM-dd"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+					</f:content>
+				</f:DynamicPageHeader>
+			</f:header>
+
+			<f:content>
+				<Table
+					id="idOrdersTable"
+					sticky="HeaderToolbar,ColumnHeaders"
+                    inset="false"
+                    items="{/Orders}"
+                    mode="SingleSelectMaster"
+                    selectionChange="onSelectionChange"
+                    class="sapFDynamicPageAlignContent"
+                    width="auto"
+				>
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Orders" level="H2"/>
+                        </Toolbar>
+                    </headerToolbar>
+					<columns>
+						<Column minScreenWidth="Tablet" demandPopin="true">
+							<Text text="OrderID"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true">
+							<Text text="CustomerID"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true">
+							<Text text="EmployeeID"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true">
+							<Text text="OrderDate"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true">
+							<Text text="RequiredDate"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true">
+							<Text text="ShippedDate"/>
+						</Column>
+					</columns>
+
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<Text text="{OrderID}" />
+								<Text text="{CustomerID}" />
+								<Text text="{EmployeeID}" />
+								<Text text="{
+                                    path: 'OrderDate',
+                                    formatter : '.fnDateToString'
+                                    }" />
+								<Text text="{
+                                    path: 'RequiredDate',
+                                    formatter : '.fnDateToString'
+                                    }" />
+								<Text text="{
+                                    path: 'ShippedDate',
+                                    formatter : '.fnDateToString'}" />
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</f:content>
+		</f:DynamicPage>
+
+
+</mvc:View>

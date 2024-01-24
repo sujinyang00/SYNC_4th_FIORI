@@ -35,6 +35,9 @@ server:
           - path: /sap
             url: http://edu.bgis.co.kr:8001/
             client: '100'
+          - path: /sap/opu/odata/sap/ZGWMEMBER_SB17_SRV/
+            url: http://edu.bgis.co.kr:8001/
+            client: '100'
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:

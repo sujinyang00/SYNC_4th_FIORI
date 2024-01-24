@@ -19,6 +19,9 @@ server:
           - path: /sap
             url: http://edu.bgis.co.kr:8001/
             client: "100"
+          - path: /sap/opu/odata/sap/ZGWMEMBER_SB17_SRV/
+            url: http://edu.bgis.co.kr:8001/
+            client: "100"
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -43,4 +46,8 @@ server:
           - urlPath: /sap/opu/odata/sap/ZCL2_PRODUCT_CDS
             metadataXmlPath: ./webapp/localService/ZCL2_PRODUCT_CDS/metadata.xml
             mockdataRootPath: ./webapp/localService/ZCL2_PRODUCT_CDS/mockdata
+            generateMockData: true
+          - urlPath: /sap/opu/odata/sap/ZGWMEMBER_SB17_SRV/
+            metadataXmlPath: ./webapp/localService/ZGWMEMBER_SB17_SRV/metadata.xml
+            mockdataRootPath: ./webapp/localService/ZGWMEMBER_SB17_SRV/mockdata
             generateMockData: true

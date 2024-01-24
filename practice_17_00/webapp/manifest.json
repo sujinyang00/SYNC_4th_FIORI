@@ -42,6 +42,15 @@
                     "localUri": "localService/ZCL2_PRODUCT_CDS/metadata.xml",
                     "odataVersion": "2.0"
                 }
+            },
+            "ZGWMEMBER_SB17_SRV": {
+                "uri": "/sap/opu/odata/sap/ZGWMEMBER_SB17_SRV/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/ZGWMEMBER_SB17_SRV/metadata.xml",
+                    "odataVersion": "2.0"
+                }
             }
         }
     },
@@ -103,6 +112,18 @@
                         "sap-value-list": "none"
                     }
                 }
+            },
+            "ZGWMEMBER_SB17_SRV": {
+                "dataSource": "ZGWMEMBER_SB17_SRV",
+                "preload": true,
+                "settings": {
+                    "defaultBindingMode": "TwoWay",
+                    "defaultCountMode": "Inline",
+                    "refreshAfterChange": false,
+                    "metadataUrlParams": {
+                        "sap-value-list": "none"
+                    }
+                }
             }
         },
         "resources": {
@@ -129,6 +150,13 @@
                     "target": [
                         "TargetMain"
                     ]
+                },
+                {
+                    "name": "RouteOrderDetail",
+                    "pattern": "orderDetail/{oid}",
+                    "target": [
+                        "TargetOrderDetail"
+                    ]
                 }
             ],
             "targets": {
@@ -138,6 +166,13 @@
                     "clearControlAggregation": false,
                     "viewId": "Main",
                     "viewName": "Main"
+                },
+                "TargetOrderDetail": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "OrderDetail",
+                    "viewName": "OrderDetail"
                 }
             }
         },

@@ -1,0 +1,16 @@
+<c:FragmentDefinition xmlns:c="sap.ui.core" xmlns="sap.m">
+    <Dialog id="idNameDialog"
+            contentWidth="40%"
+            contentHeight="50%"
+            title="My Name"
+            draggable="false"
+            resizable="false">
+        <content>
+            <Text text="양수진"/>
+        </content>
+        <endButton>
+            <Button text="close" icon="sap-icon://decline" 
+            press="onCloseNameDialog"/>
+        </endButton>
+    </Dialog>
+</c:FragmentDefinition>
