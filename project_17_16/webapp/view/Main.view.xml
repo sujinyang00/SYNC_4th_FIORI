@@ -2,6 +2,72 @@
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
-        <content />
+        <content>
+
+        <VBox >        
+            <!-- <Image width="100px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGstU18YgpipBKJp2nl4-GjFngqVUy-sP_Q&amp;usqp=CAU"/>
+             -->
+            <Text text="이미지 배포해서 띄우기"/>
+            <!-- <Image width="300px" src="../image/mudo2.png" /> -->
+            <Image width="300px" id="idImage"/>
+            
+        </VBox>
+
+        <Table 
+            id="idCategoriesTable" 
+            items="{/Member}" 
+            mode="SingleSelectMaster" 
+            selectionChange="onSelectionChange"
+            width="auto"
+        >                              
+            <columns>
+                <Column
+                    hAlign="Begin"
+                    width="5em">
+                    <Text text="Memid" />
+                </Column>                
+                <Column
+                    hAlign="Begin"
+                    width="3em">
+                    <Text text="Image" />
+                </Column>                
+                <Column
+                    hAlign="Begin"
+                    width="12em">
+                    <Text text="Memnm" />
+                </Column>                
+                <Column
+                    hAlign="Begin"
+                    width="12em">
+                    <Text text="Telno" />
+                </Column>                
+                <Column
+                    hAlign="Begin"
+                    width="12em">
+                    <Text text="Email" />
+                </Column>                
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <Text
+                            text="{Memid}" />                    
+                        <Image width="50px" 
+                            src="{
+                                path: 'Memid',
+                                formatter: '.setImageUrl'                
+                            }" />                  
+                        <Text
+                            text="{Memnm}" />                    
+                        <Text
+                            text="{Telno}" />                    
+                        <Text
+                            text="{Email}" />                    
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+
+        </content>
     </Page>
 </mvc:View>

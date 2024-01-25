@@ -1,6 +1,9 @@
 /**
  * eslint-disable @sap/ui5-jsdocs/no-jsdoc
  */
+//변수 선언
+var _rootPath = jQuery.sap.getModulePath("project1716").split('/~')[0];
+// debugger;
 
 sap.ui.define([
         "sap/ui/core/UIComponent",
