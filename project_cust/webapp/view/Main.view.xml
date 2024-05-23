@@ -7,15 +7,169 @@
 	xmlns:lf="sap.ui.layout.form"
 	height="100%">
     <Page id="page" title="{i18n>title}" class="sapUiResponsiveContentPadding">
+        
+        <!-- <l:BlockLayout background="Light">
+            <l:BlockLayoutRow>
+                <l:BlockLayoutCell class="sapUiNoContentPadding">
+                    <Carousel
+                        id="welcomeCarousel"
+                        showPageIndicator="false"
+                        loop="true"
+                        pageChanged=".onCarouselPageChanged"
+                        visible="{=!${device>/system/phone}}"
+                        tooltip="{i18n>welcomeDescription}">
+                        <pages>
+                            <VBox renderType="Bare" justifyContent="Center" alignItems="Center">
+                                <Image
+                                    src="{
+                                        path: 'view>/welcomeCarouselShipping',
+                                        formatter : '.formatter.pictureUrl'
+                                        }"
+                                    width="70%"
+                                    height="70%"/>
+                                <Text
+                                    text="{i18n>welcomeCarouselShipping}"
+                                    class="welcomeCarouselText"/>
+                            </VBox>
+                            <VBox renderType="Bare" justifyContent="Center" alignItems="Center">
+                                <Image
+                                    src="{
+                                        path: 'view>/welcomeCarouselInviteFriend',
+                                        formatter : '.formatter.pictureUrl'
+                                    }"
+                                    width="70%"
+                                    height="70%"/>
+                                <Text
+                                    text="{i18n>welcomeCarouselInviteFriend}"
+                                    class="welcomeCarouselText"/>
+                            </VBox>
+                            <VBox renderType="Bare" justifyContent="Center" alignItems="Center">
+                                <Image
+                                    src="{
+                                        path: 'view>/welcomeCarouselTablet',
+                                        formatter : '.formatter.pictureUrl'
+                                        }"
+                                    width="70%"
+                                    height="70%"/>
+                                <Text
+                                    text="{i18n>welcomeCarouselTablet}"
+                                    class="welcomeCarouselText"/>
+                            </VBox>
+                            <VBox renderType="Bare" justifyContent="Center" alignItems="Center">
+                                <Image
+                                    src="{
+                                        path: 'view>/welcomeCarouselCreditCard',
+                                        formatter : '.formatter.pictureUrl'
+                                        }"
+                                    width="70%"
+                                    height="70%"/>
+                                <Text
+                                    text="{i18n>welcomeCarouselCreditCard}"
+                                    class="welcomeCarouselText"/>
+                            </VBox>
+                        </pages>
+                    </Carousel>
+                </l:BlockLayoutCell>
+            </l:BlockLayoutRow>
+        </l:BlockLayout> -->
+
+
+        
+        
+        
+		<!-- <Panel headerText="{i18n>carouselPanelTitle}"> -->
+        <Panel>
+            <content>
+                <Title text="SYNC - REST 의 매트리스와 케어 제품들" level="H2" />
+                <Carousel
+                    id="carouselSample"
+                    height="auto"
+                    pages="{
+                        path: 'products>/ProductListEntitySet'
+                    }"                    
+                    >                    
+                    <customLayout>
+                        <CarouselLayout visiblePagesCount="{settings>/pagesCount}"/>
+                    </customLayout>
+                    <ScrollContainer 
+                        vertical="false" 
+                        horizontal="false"                        
+                        class="sapUiContentPadding"                        
+                        >
+                        <f:Card>
+                            <f:header>
+                                <cards:Header
+                                    title="{products>Matname}"
+                                    subtitle="{products>Matcode}"
+                                    iconSrc="{products>Matimg}"
+                                    iconDisplayShape="Square" />
+                            </f:header>
+                            
+                            <f:content> 
+                                <l:VerticalLayout class="sapUiContentPadding" width="100%">
+                                    <l:BlockLayout>
+                                        <l:BlockLayoutRow>
+                                            <l:BlockLayoutCell title="Main Information" width="1" >     
+                                                <HBox class="sapUiSmallMargin">
+                                                    <ImageContent
+                                                        class="sapUiLargeMarginTop sapUiLargeMarginBottom"
+                                                        src="sap-icon://area-chart"
+                                                        description="Icon"
+                                                        press=".onSelectProduct">
+                                                    </ImageContent>                                                                                        
+                                                </HBox>                                        
+                                                
+                                                
+                                                
+                                                <HBox class="sapUiTinyMarginBottom">
+                                                    <Label text="자재명 :" />
+                                                </HBox>
+                                                <HBox class="sapUiSmallMarginBottom">
+                                                    <Text text="{products>Matname}" />
+                                                </HBox>
+                                                <HBox class="sapUiTinyMarginBottom">
+                                                    <Label text="판매가 :" />
+                                                </HBox>
+                                                <HBox class="sapUiSmallMarginBottom">
+                                                    <Text text="{products>Matprice}" />
+                                                </HBox>		
+                                                <HBox class="sapUiTinyMarginBottom">
+                                                    <Label text="5년 렌탈 시 월 렌탈료 :" />
+                                                </HBox>
+                                                <HBox class="sapUiSmallMarginBottom">
+                                                    <Text text="{products>Mb1}" />
+                                                </HBox>		
+                                                <HBox class="sapUiTinyMarginBottom">
+                                                    <Label text="7년 렌탈 시 월 렌탈료 :" />
+                                                </HBox>
+                                                <HBox class="sapUiSmallMarginBottom">
+                                                    <Text text="{products>Mb2}" />
+                                                </HBox>			
+                                                							
+                                            </l:BlockLayoutCell>
+                                        </l:BlockLayoutRow>
+                                    </l:BlockLayout>
+                                </l:VerticalLayout>
+                            </f:content>
+                        </f:Card>
+                    </ScrollContainer>
+                </Carousel>
+            </content>
+        </Panel>
+
+
+
+
+
         <lf:SimpleForm
 			labelSpanL="6"
 			labelSpanM="6"
 			editable="true"
 			layout="ResponsiveGridLayout">
-			<Label text="Number of pages to display" />
+			<Label text="한 페이지에 보이는 상품수" />
 			<Input
 				type="Number"
-				value="4"
+				value="3"
 			liveChange=".onNumberOfPages"
 				width="320px" />
 			<Label text="Scroll mode - visible pages:" />
@@ -24,66 +178,8 @@
 				tooltip="Toggles the scrollMode property of the carousel"
 				change=".OnScrollModeChange" />
 		</lf:SimpleForm>
-		<Carousel
-			id="carouselSample"
-			height="auto"
-			pages="{
-				path: 'products>/ProductListEntitySet'
-			}">
-			<customLayout>
-				<CarouselLayout visiblePagesCount="{settings>/pagesCount}"/>
-			</customLayout>
-			<ScrollContainer 
-				vertical="false" 
-				horizontal="false" 
-				class="sapUiContentPadding">
 
-				<f:Card>
-					<f:header>
-						<cards:Header
-							title="{products>Matname}"
-							subtitle="{products>Matcode}"
-							iconSrc="{products>Matimg}"
-							iconDisplayShape="Square" />
-					</f:header>
-					<f:content>
-						<l:VerticalLayout class="sapUiContentPadding" width="100%">
-							<l:BlockLayout>
-								<l:BlockLayoutRow>
-									<l:BlockLayoutCell title="Main Information" width="1">
-										<HBox class="sapUiTinyMarginBottom">
-											<Label text="자재명 :" />
-										</HBox>
-										<HBox class="sapUiSmallMarginBottom">
-											<Text text="{products>Matname}" />
-										</HBox>
-										<HBox class="sapUiTinyMarginBottom">
-											<Label text="판매가 :" />
-										</HBox>
-										<HBox class="sapUiSmallMarginBottom">
-											<Text text="{products>Matprice}" />
-										</HBox>		
-                                        <HBox class="sapUiTinyMarginBottom">
-											<Label text="5년 렌탈 시 월 렌탈료 :" />
-										</HBox>
-										<HBox class="sapUiSmallMarginBottom">
-											<Text text="{products>Mb1}" />
-										</HBox>		
-                                        <HBox class="sapUiTinyMarginBottom">
-											<Label text="7년 렌탈 시 월 렌탈료 :" />
-										</HBox>
-										<HBox class="sapUiSmallMarginBottom">
-											<Text text="{products>Mb2}" />
-										</HBox>										
-									</l:BlockLayoutCell>
 
-									
-								</l:BlockLayoutRow>
-							</l:BlockLayout>
-						</l:VerticalLayout>
-					</f:content>
-				</f:Card>
-			</ScrollContainer>
-		</Carousel>
+
     </Page>
 </mvc:View>
