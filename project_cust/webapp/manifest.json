@@ -86,6 +86,12 @@
       "config": {
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
+        "bypassed": {
+					"target": [
+						"RouteMain",
+						"notFound"
+					]
+				},
         "async": true,
         "viewPath": "projectcust.view",
         "controlAggregation": "pages",
@@ -106,7 +112,15 @@
           "target": [
             "TargetProduct"
           ]
+        },
+        {
+          "name": "RoutePayment",
+          "pattern": "payment/{custCode}",
+          "target": [
+            "TargetPayment"
+          ]
         }
+        
       ],
       "targets": {
         "TargetMain": {
@@ -122,7 +136,40 @@
           "clearControlAggregation": false,
           "viewId": "Product",
           "viewName": "Product"
-        }
+        },
+        "TargetPayment": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Payment",
+          "viewName": "Payment"
+        },        
+        "product": {
+					"viewName": "Product",
+					"viewLevel": 3,
+					"viewId": "product",
+					"controlAggregation": "midColumnPages",
+					"title":"{Name}"
+				},
+        
+        "cart": {
+					"viewName": "Cart",
+					"controlAggregation": "endColumnPages",
+					"viewId": "cartView",
+					"title": {
+						"parts": [
+							"i18n>tabTitle",
+							"i18n>tableTitleCart"
+						]
+					}
+				},
+				"notFound": {
+					"viewName": "NotFound",
+					"viewLevel": 3,
+					"controlAggregation": "midColumnPages",
+					"viewId": "notFoundView",
+					"title": "{i18n>categoryNoData}"
+				}
       }
     },
     "rootView": {

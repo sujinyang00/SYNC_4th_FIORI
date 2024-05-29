@@ -1,6 +1,7 @@
 /**
  * eslint-disable @sap/ui5-jsdocs/no-jsdoc
  */
+var _rootPath = jQuery.sap.getModulePath("projectcust").split('~/')[0];
 
 sap.ui.define([
         "sap/ui/core/UIComponent",
@@ -9,6 +10,8 @@ sap.ui.define([
     ],
     function (UIComponent, Device, models) {
         "use strict";
+
+        
 
         return UIComponent.extend("projectcust.Component", {
             metadata: {

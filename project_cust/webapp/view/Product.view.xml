@@ -1,114 +1,230 @@
-<mvc:View
-	controllerName="projectcust.controller.Product"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc">
-	<Page
-		id="page"
-		backgroundDesign="Solid">
-		<landmarkInfo>
-			<PageAccessibleLandmarkInfo
-				rootRole="Region"
-				rootLabel="{i18n>Product_rootLabel}"
-				contentRole="Main"
-				contentLabel="{i18n>Product_contentLabel}"
-				headerRole="Region"
-				headerLabel="{i18n>Product_headerLabel}"
-				footerRole="Region"
-				footerLabel="{i18n>Product_footerLabel}"/>
-		</landmarkInfo>
-		<customHeader>
-			<Bar>
-				<contentLeft>
-					<Button
-						type="Back"
-						visible="{appView>/smallScreenMode}"
-						press=".onBack"/>
-				</contentLeft>
-				<contentMiddle>
-					<Title
-						level="H2"
-						text="{Name}"/>
-				</contentMiddle>
-				<contentRight>
-					<Button
-						icon="sap-icon://customer"
-						press=".onAvatarPress"
-						tooltip="{i18n>avatarButtonTooltip}"/>
-					<ToggleButton
-						icon="sap-icon://cart"
-						pressed="{= ${appView>/layout}.startsWith('ThreeColumns') }"
-						tooltip="{i18n>toCartButtonTooltip}"
-						press=".onToggleCart">
-					</ToggleButton>
-				</contentRight>
-			</Bar>
-		</customHeader>
+<mvc:View controllerName="projectcust.controller.Product"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table"
+	xmlns:f="sap.f"
+    xmlns="sap.m"
+	xmlns:w="sap.ui.webc.main"
+	>
+    <!-- xmlns:f="sap.ui.layout.form" -->
+
+    <Page id="page" 
+        title="{i18n>title}" 
+        showNavButton="true" 
+        navButtonPress="onNavBack">	
+
+		
+		<Toolbar>		
+			<Title text="" />
+			<ToolbarSpacer />
+			<Button
+				icon="sap-icon://cart-4"
+				press=".onMenuButtonPress"
+				tooltip="{i18n>menuButtonTooltip}"/>
+		</Toolbar>
+									
+
+		<l:Splitter height="auto">
+			<Panel width="100%">
+				<layoutData>
+					<l:SplitterLayoutData size="auto" />
+				</layoutData>
+
+				<VBox >			
+					<ObjectHeader
+						title="{products>Matname}"
+						id="HeaderMatName"
+						titleLevel="H3"
+						number="{
+							path : '{products>Matprice}'
+						}"
+						numberUnit="KRW">
+						<!-- title="{products>/ProductListEntitySet/Matname}" -->
+						
+						<attributes>
+							<ObjectAttribute
+								title="{i18n>productPurPrice}"
+								id="HeaderMatprice"
+								text="{products>Matprice}"/>
+							<ObjectAttribute
+								title="{i18n>productRent5Price}"
+								id="HeaderMb1"
+								text="{products>Mb1}"/>
+							<ObjectAttribute
+								title="{i18n>productRent7Price}"
+								id="HeaderMb2"
+								text="{products>Mb2}"/>					
+							
+							<!-- <ObjectAttribute
+								title="{i18n>productMeasuresAttributeText}"
+								text="{DimensionWidth} {Unit}, {DimensionDepth} {Unit}, {DimensionHeight} {Unit}"/> -->
+						</attributes>			
+					</ObjectHeader>
+									
+					<VBox									
+						alignItems="Center"
+						justifyContent="Center"
+						renderType="Div">
+						
+						<l:VerticalLayout class="sapUiContentPadding">
+							<l:content>						
+								<SegmentedButton selectionChange="handleSelectionChange" id="paymentMethodSelection"
+													selectedKey="{/selectedPayment}" width="600px">
+									<items>
+										<SegmentedButtonItem key="Purchase" icon="sap-icon://credit-card"
+																text="즉시구매"/>
+										<SegmentedButtonItem key="Rent5" icon="sap-icon://official-service"
+																text="5년 렌탈"/>
+										<SegmentedButtonItem key="Rent7" icon="sap-icon://official-service"
+																text="7년 렌탈"/>
+									</items>
+								</SegmentedButton>						
+							</l:content>
+						</l:VerticalLayout>
+						
+						
+						<Image
+							id="idProductImage"
+							src="{
+								path: 'products>Matcode',
+								formatter: '.setImageUrl'  
+								}"
+							decorative="true"
+							densityAware="false"
+							width="100%">							
+						
+							<!-- <detailBox>
+								<LightBox id="lightBox">
+									<imageContent>
+										<LightBoxItem
+											imageSrc="{path : 'products>Matcode',formatter: '.setImageUrl'}"
+											title="{products>Matname}"/>
+									</imageContent>
+								</LightBox>
+							</detailBox> -->
+						</Image>
+					</VBox>
+				</VBox>
+			</Panel >
+
+
+		<VBox height="100%">
+            <layoutData>
+                <l:SplitterLayoutData id="cartView" size="350px" />
+            </layoutData>
+			<Panel height="800px" >                                        
+                <Page >                
+                    <customHeader>
+                        <Toolbar>
+                            <Title level="H3" text="장바구니" />
+                            <ToolbarSpacer />
+                            <Button icon="sap-icon://settings" press=".handleButtonPress" />
+                        </Toolbar>
+                    </customHeader>
+                    
+                    <footer>
+                        <Toolbar>
+                            <Text
+                                id="totalPriceText"
+                                text="{
+                                    path : 'cartProducts>/cartEntries',
+                                    formatter : '.formatter.totalPrice'
+                                } KRW"
+                                class="sapUiTinyMarginBegin"/>
+                            <ToolbarSpacer/>
+                            <Button
+                                id="proceedButton"
+                                type="Accept"
+                                text="{i18n>cartProceedButtonText}"
+                                enabled="{
+                                    path: 'cartProducts>/cartEntries',
+                                    formatter: '.formatter.hasItems'
+                                }"
+                                visible="{cfg>/notInDelete}"
+                                press=".onProceedButtonPress"/>
+                        </Toolbar>
+                    </footer>
+
+                    <content>
+                        <List mode="Delete"
+                            items="{payment>/CartEntitySet}"
+                            enableBusyIndicator="true"
+                            delete="handleDelete"
+                            headerText=""
+                            id="idProductList">
+                            <ObjectListItem
+                                title="{payment>Matname}"
+                                intro="{payment>Quant} x"
+                                type="Active"
+                                number="{payment>Matprice}"
+                                numberUnit="{payment>Currkey}"
+                                icon="{
+                                    path: 'payment>Matcode',
+                                    formatter: '.setImageUrl'
+                                }"
+                                iconDensityAware="false">
+                                <attributes>
+                                    <ObjectAttribute text="{payment>Matcode}" />
+                                </attributes>
+                            </ObjectListItem>  
+                        </List>
+                    </content>                                    
+                </Page>            
+            </Panel> 
+		</VBox>
+	</l:Splitter>
+
+
+
+
+
+        
+        <Table 
+            id="idProductsTable" 
+            items="{
+                path: 'products>/ProductListEntitySet'				    
+            }" 
+            width="auto"
+			visible="false"
+        >                              
+            <columns>
+                <Column
+                    hAlign="Begin"
+                    width="12em">
+                    <Text text="자재코드" />
+                </Column>                
+                <Column
+                    hAlign="Begin"
+                    width="12em">
+                    <Text text="자재명" />
+                </Column>  
+				<Column
+                    hAlign="Begin"
+                    width="12em">
+                    <Text text="판매가" />
+                </Column>              
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <Text id="matcode" text="{products>Matcode}" />                  
+                        <Text id="matname" text="{products>Matname}" />
+						<Text id="matprice" text="{products>Matprice}" />                                                             
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
 				<Button
 					text="{i18n>addToCartShort}"
+					icon="sap-icon://cart"
 					type="Emphasized"
 					press=".onAddToCart" />
 			</Toolbar>
 		</footer>
-		<content>
-			<ObjectHeader
-				title="{Name}"
-				titleLevel="H3"
-				number="{
-					path : 'Price',
-					formatter : '.formatter.price'
-				}"
-				numberUnit="EUR">
-				<attributes>
-					<ObjectAttribute
-						title="{i18n>productSupplierAttributeText}"
-						text="{SupplierName}"/>
-					<ObjectAttribute
-						title="{i18n>productDescriptionAttributeText}"
-						text="{ShortDescription}"/>
-					<ObjectAttribute
-						title="{i18n>productWeightAttributeText}"
-						text="{Weight} {WeightUnit}"/>
-					<ObjectAttribute
-						title="{i18n>productMeasuresAttributeText}"
-						text="{DimensionWidth} {Unit}, {DimensionDepth} {Unit}, {DimensionHeight} {Unit}"/>
-				</attributes>
-				<statuses>
-					<ObjectStatus
-						text="{
-							path : 'Status',
-							formatter : '.formatter.statusText'
-						}"
-						state="{
-							path : 'Status',
-							formatter : '.formatter.statusState'
-						}"/>
-				</statuses>
-			</ObjectHeader>
-			<VBox
-				alignItems="Center"
-				renderType="Div">
-				<Image
-					id="productImage"
-					src="{path : 'PictureUrl', formatter : '.formatter.pictureUrl'}"
-					decorative="true"
-					densityAware="false"
-					class="sapUiSmallMargin"
-					width="100%"
-					height="100%">
-					<detailBox>
-						<LightBox id="lightBox">
-							<imageContent>
-								<LightBoxItem
-									imageSrc="{path : 'PictureUrl', formatter : '.formatter.pictureUrl'}"
-									title="{Name}"/>
-							</imageContent>
-						</LightBox>
-					</detailBox>
-				</Image>
-			</VBox>
-		</content>
-	</Page>
+    </Page>
 </mvc:View>

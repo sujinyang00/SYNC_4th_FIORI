@@ -83,6 +83,22 @@ sap.ui.define([
 		},
 
 		/**
+		 * Formats the price
+		 * @param {string} sValue model price value
+		 * @return {string} formatted price
+		 */
+		price: function (sValue) {
+			var numberFormat = NumberFormat.getFloatInstance({
+				maxFractionDigits: 0,
+				// minFractionDigits: 2,
+				groupingEnabled: true,
+				groupingSeparator: ".",
+				decimalSeparator: ","
+			});
+			return numberFormat.format(sValue);
+		},
+
+		/**
 		 * Returns the footer text for the cart based on the amount of products
 		 * @param {object} oSavedForLaterEntries the entries in the cart
 		 * @return {string} "" for no products, the i18n text for >0 products

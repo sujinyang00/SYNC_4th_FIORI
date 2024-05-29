@@ -1,1 +1,7 @@
 /* Enter your custom styles here */
+
+
+.noRightMargin {
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+}
