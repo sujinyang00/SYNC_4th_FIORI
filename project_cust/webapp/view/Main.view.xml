@@ -160,7 +160,8 @@
                                                 <ObjectListItem
                                                     class="welcomePrice"
                                                     number="{
-                                                        path: 'products>Matprice'
+                                                        path: 'products>Matprice',
+                                                        formatter : '.setPrice'                                                        
                                                     }"
                                                     numberUnit="KRW">
                                                     <layoutData>
@@ -238,7 +239,7 @@
                     </footer>
 
                     <content>
-                        <List mode="Delete"
+                        <List 
                             items="{payment>/CartEntitySet}"
                             enableBusyIndicator="true"
                             delete="handleDelete"
@@ -248,7 +249,10 @@
                                 title="{payment>Matname}"
                                 intro="{payment>Quant} x"
                                 type="Active"
-                                number="{payment>Matprice}"
+                                number="{
+                                    path : 'payment>Matprice',
+                                    formatter : '.setPrice'
+                                }"
                                 numberUnit="{payment>Currkey}"
                                 icon="{
                                     path: 'payment>Matcode',

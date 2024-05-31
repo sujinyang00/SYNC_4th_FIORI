@@ -32,7 +32,7 @@ sap.ui.define([
                 this.model.attachRequestCompleted(null, function () {
                     this.model.getData().CartEntitySet.splice(5, this.model.getData().CartEntitySet.length);
                     this.model.setProperty("/selectedPayment", "Credit Card");
-                    this.model.setProperty("/selectedDeliveryMethod", "Standard Delivery");
+                    this.model.setProperty("/selectedDeliveryMethod", "Standard");
                     this.model.setProperty("/differentDeliveryAddress", false);
                     this.model.setProperty("/CashOnDelivery", {});
                     this.model.setProperty("/BillingAddress", {});
@@ -58,12 +58,13 @@ sap.ui.define([
                     aFilter.push(new Filter("Custcode", FilterOperator.EQ, oArgu.custCode));
                     console.log('aFilter1 : ',aFilter);
                 }   
-                // this.byId("idCustTable").getBinding("items").filter(aFilter);
-                
-                //idProductList
+                                
                 this.byId("idProductList").getBinding("items").filter(aFilter);
+                this.byId("idProductFinList").getBinding("items").filter(aFilter);
                 this.calcTotal(); //총 금액 계산
             },
+
+            
 
             setImageUrl: function(sValue) {
                 return `${_rootPath}/image/${sValue}.png`;
@@ -89,9 +90,10 @@ sap.ui.define([
                         });
 
                         // 결과 출력
-                        console.log("총 금액 :", total * 100);
-                        this.byId("ProductsTotalPrice").setNumber(total * 100);
-                        this.byId("ProductsTotalPrice2").setNumber(total * 100);
+                        var formattedTotprice = this.setPrice(total);
+                        console.log("총 금액 :", formattedTotprice);
+                        this.byId("ProductsTotalPrice").setNumber(formattedTotprice);
+                        this.byId("ProductsTotalPrice2").setNumber(formattedTotprice);
 
                     }.bind(this),
                     error: function(oError) {
@@ -102,6 +104,19 @@ sap.ui.define([
                 });
                 
             },
+
+            setPrice: function(sValue) {
+                // sValue가 존재하고 유효한 숫자인지 확인
+                if (sValue && !isNaN(sValue)) {
+                    // 숫자로 변환 후 정수로 변환하여 소숫점 이하를 제거하고 100을 곱합니다.
+                    var intValue = parseInt(parseFloat(sValue) * 100);
+                    // KRW를 적용하고 3자리마다 쉼표를 추가하여 반환합니다.
+                    return intValue.toLocaleString('en');// + " KRW";
+                } else {
+                    return sValue; // sValue가 유효하지 않으면 그대로 반환합니다.
+                }
+            },
+
 
 
 
@@ -150,6 +165,8 @@ sap.ui.define([
                                
 
             },
+
+            
     
             goToPaymentStep: function () {
                 var selectedKey = this.model.getProperty("/selectedPayment");
@@ -179,7 +196,7 @@ sap.ui.define([
     
             setDifferentDeliveryAddress: function () {
                 this.setDiscardableProperty({
-                    message: "배송방식을 바꾸시겠습니까? 지금까지 입력한 배송정보가 사라집니다. ",
+                    message: "배송 주소를 변경하시겠습니까? 지금까지 입력한 배송정보가 사라집니다. ",
                     discardStep: this.byId("BillingStep"),
                     modelPath: "/differentDeliveryAddress",
                     historyPath: "prevDiffDeliverySelect"
@@ -266,6 +283,9 @@ sap.ui.define([
                         if (oAction === MessageBox.Action.YES) {
                             this._wizard.discardProgress(this._wizard.getSteps()[0]);
                             this.handleNavBackToList();
+
+                            //판매오더 발생
+                            //P R5 R7 나눠서 create 
                         }
                     }.bind(this)
                 });

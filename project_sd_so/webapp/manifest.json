@@ -1,7 +1,7 @@
 {
   "_version": "1.59.0",
   "sap.app": {
-    "id": "projectcust",
+    "id": "projectsdso",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
       "version": "1.12.2",
-      "toolsId": "e5b03e56-5c49-4fb0-a8ed-0b759d5466b8"
+      "toolsId": "aeacd727-71c6-4f4e-aae1-f74132183208"
     },
     "dataSources": {
       "mainService": {
@@ -66,7 +66,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "projectcust.i18n.i18n"
+          "bundleName": "projectsdso.i18n.i18n"
         }
       },
       "": {
@@ -86,14 +86,8 @@
       "config": {
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
-        "bypassed": {
-					"target": [
-						"RouteMain",
-						"notFound"
-					]
-				},
         "async": true,
-        "viewPath": "projectcust.view",
+        "viewPath": "projectsdso.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
@@ -107,20 +101,12 @@
           ]
         },
         {
-          "name": "RouteProduct",
-          "pattern": "product/{mCode}/{custCode}",
+          "name": "RouteDetail",
+          "pattern": "detail/{sCode}",
           "target": [
-            "TargetProduct"
-          ]
-        },
-        {
-          "name": "RoutePayment",
-          "pattern": "payment/{custCode}",
-          "target": [
-            "TargetPayment"
+            "TargetDetail"
           ]
         }
-        
       ],
       "targets": {
         "TargetMain": {
@@ -130,50 +116,17 @@
           "viewId": "Main",
           "viewName": "Main"
         },
-        "TargetProduct": {
+        "TargetDetail": {
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
-          "viewId": "Product",
-          "viewName": "Product"
-        },
-        "TargetPayment": {
-          "viewType": "XML",
-          "transition": "slide",
-          "clearControlAggregation": false,
-          "viewId": "Payment",
-          "viewName": "Payment"
-        },        
-        "product": {
-					"viewName": "Product",
-					"viewLevel": 3,
-					"viewId": "product",
-					"controlAggregation": "midColumnPages",
-					"title":"{Name}"
-				},
-        
-        "cart": {
-					"viewName": "Cart",
-					"controlAggregation": "endColumnPages",
-					"viewId": "cartView",
-					"title": {
-						"parts": [
-							"i18n>tabTitle",
-							"i18n>tableTitleCart"
-						]
-					}
-				},
-				"notFound": {
-					"viewName": "NotFound",
-					"viewLevel": 3,
-					"controlAggregation": "midColumnPages",
-					"viewId": "notFoundView",
-					"title": "{i18n>categoryNoData}"
-				}
+          "viewId": "Detail",
+          "viewName": "Detail"
+        }
       }
     },
     "rootView": {
-      "viewName": "projectcust.view.App",
+      "viewName": "projectsdso.view.App",
       "type": "XML",
       "async": true,
       "id": "App"

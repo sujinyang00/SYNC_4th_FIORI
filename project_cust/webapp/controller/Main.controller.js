@@ -15,7 +15,7 @@ sap.ui.define([
     function (Controller, Device, JSONModel, Filter, FilterOperator, library, formatter, MessageToast, MessageBox) {
         "use strict";
 
-        var sCustcode = 'CUST000006';
+        var sCustcode = 'CUST000001';
         var aFilter = [];
         aFilter.push(new Filter("Custcode", FilterOperator.EQ, sCustcode));
 
@@ -31,8 +31,6 @@ sap.ui.define([
                     iPagesCount = 1;
                 this.getView().setModel(oProductsModel, "products");
 
-                
-                
                 
                 if (Device.system.desktop) {
                     iPagesCount = 2;    //한 페이지에 보이는 상품수
@@ -151,10 +149,11 @@ sap.ui.define([
                 //Detail로 라우팅
                 if (sMatcode != null) {
                     this.oRouter.navTo('RouteProduct', {
-                        mCode: oBindingContext.getProperty("Matcode")
+                        mCode: oBindingContext.getProperty("Matcode"),
+                        custCode: sCustcode
                     }, true);
 
-                    console.log('>>>',oBindingContext.getProperty("Matcode"));
+                    // console.log('>>>',oBindingContext.getProperty("Matcode"));
                 }                
             },
             
@@ -201,53 +200,18 @@ sap.ui.define([
 
             },
 
-            //장바구니 삭제 
-            onDelete: function(sMatcode, sCustcode) {
-                var oDataModel = this.getView().getModel("payment");
 
-                var sPath = oDataModel.createKey("/CartEntitySet", {
-                    Matcode: sMatcode,
-                    Custcode: sCustcode
-                });
-
-                oDataModel.remove(sPath, {
-                    success: function(oReturn) {
-                        MessageBox.success("✅ 데이터 삭제 완료 ");
-                        console.log('Cart 단건 삭제 : ',oReturn);
-                        location.reload();
-                    },
-                    error: function(oError) {
-                        MessageBox.error("⚠️ 데이터 삭제 실패 ");
-                        console.log('Cart 삭제 중 오류 발생 : ',oError);
-
-                    }
-                })
+            setPrice: function(sValue) {
+                // sValue가 존재하고 유효한 숫자인지 확인
+                if (sValue && !isNaN(sValue)) {
+                    // 숫자로 변환 후 정수로 변환하여 소숫점 이하를 제거하고 100을 곱합니다.
+                    var intValue = parseInt(parseFloat(sValue) * 100);
+                    // KRW를 적용하고 3자리마다 쉼표를 추가하여 반환합니다.
+                    return intValue.toLocaleString('en') + " KRW";
+                } else {
+                    return sValue; // sValue가 유효하지 않으면 그대로 반환합니다.
+                }
             },
-
-            
-            handleDelete: function (oEvent) {
-
-                var listItem = oEvent.getParameter("listItem");
-                var oContext = listItem.getBindingContext("payment");
-                var sPath = oContext.getPath();
-                
-                // sPath는 삭제할 항목의 모델 경로입니다. 예를 들어, "/CartEntitySet/0"
-                var aPathParts = sPath.split("/");
-                var sIndex = aPathParts[aPathParts.length - 1]; 
-                // console.log(sIndex); //삭제할 행 정보 담김
-
-                var custcodeMatch = sIndex.match(/Custcode='([^']+)'/);
-                var matcodeMatch = sIndex.match(/Matcode='([^']+)'/);
-
-                var sCustcode = custcodeMatch ? custcodeMatch[1] : null;
-                var sMatcode = matcodeMatch ? matcodeMatch[1] : null;
-
-
-                this.onDelete(sMatcode, sCustcode);    //DB에서 삭제
-                            
-            },
-
-
             
         });
     });

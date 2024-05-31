@@ -9,47 +9,12 @@
     
     <NavContainer id="navContainer">
 		<pages>
-			<!-- <Table 
-				id="idCustTable" 
-				items="{
-					path: 'payment>/CartListEntitySet'				    
-				}" 
-				width="auto"
-				visible="false"
-			>                              
-				<columns>
-					<Column
-						hAlign="Begin"
-						width="12em">
-						<Text text="고객코드" />
-					</Column>        
-				</columns>
-				<items>
-					<ColumnListItem vAlign="Middle">
-						<cells>
-							<Text id="custcode" text="{payment>Custcode}" />                                                         
-						</cells>
-					</ColumnListItem>
-				</items>
-			</Table> -->
-
-
-
-
 			<f:DynamicPage
 				id="dynamicPage"
 				toggleHeaderOnTitleClick="{/titleClickable}"
 				stickySubheaderProvider="ShoppingCartWizard"
 				class="sapUiNoContentPadding"
 				showFooter="true">
-				<!-- DynamicPage Title -->
-				<!-- <f:title>
-					<f:DynamicPageTitle>
-						<f:heading>
-							<Title text="장바구니에 담긴 상품의 결제를 진행합니다."/>
-						</f:heading>
-					</f:DynamicPageTitle>
-				</f:title> -->
 
 				<f:title>
                     <f:DynamicPageTitle>
@@ -77,7 +42,10 @@
 							<ObjectHeader
 								title="Total. 결제할 금액"
 								id="ProductsTotalPrice"
-								number="{/ProductsTotalPrice}"
+								number="{
+									path : '/ProductsTotalPrice',
+									formatter : '.setPrice'
+								}"
 								numberUnit="KRW">
 								<attributes>
 									<ObjectAttribute text="사용자님의 장바구니에 담긴 상품 입니다."/>
@@ -93,7 +61,10 @@
 									title="{payment>Matname}"
 									intro="{payment>Quant} x"
 									type="Active"
-									number="{payment>Matprice}"
+									number="{
+										path : 'payment>Matprice',
+										formatter : '.setPrice'
+									}"
 									numberUnit="{payment>Currkey}"
 									icon="{
 										path: 'payment>Matcode',
@@ -148,7 +119,7 @@
 								<Input value="{/CardNumber}"/>
 								<Label text="CVS 세자리"/>
 								<Input value="{/SecurityCode}"/>
-								<Label text="유효기간"/>
+								<Label text="카드 유효기간"/>
 								<DatePicker value="{/Expire}"/>
 							</form:SimpleForm>
 						</WizardStep>
@@ -239,32 +210,32 @@
 							<form:SimpleForm
 								editable="true"
 								layout="ColumnLayout">
-								<Label text="Address"/>
+								<Label text="도로명 주소 (ex. 버드나루로 100)"/>
 								<Input/>
-								<Label text="City"/>
+								<Label text="시/군/구 (ex.서울특별시 영등포구)"/>
 								<Input/>
-								<Label text="Zip Code"/>
+								<Label text="우편번호"/>
 								<Input/>
-								<Label text="Country"/>
+								<Label text="국가 (ex.대한민국)"/>
 								<Input/>
-								<Label text="Note"/>
+								<Label text="메모"/>
 								<TextArea rows="8"/>
 							</form:SimpleForm>
 						</WizardStep>
 						<WizardStep
 							id="DeliveryTypeStep"
-							title="배달방식"
+							title="배송방식"
 							icon="sap-icon://insurance-car">
 							<Text class="sapUiSmallMarginBottom"
-							      text="Standard delivery will be delivered within 5 workdays. Be aware, that around high-season sales, standard delivery may take up to one additional day. Express delivery is delivered within 36 hours. A service fee of 5.49 KRW is charged for Express delivery on a workday. For a holiday delivery, the service fee is 8,00 KRW. Express delivery is only available for inland deliveries. All service fees vary for deliveries  abroad."/>
+							      text="일반 배송은 영업일 기준 5일 이내에 배송됩니다. 성수기에는 일반 배송이 최대 하루 더 소요될 수 있습니다. 특급 배송은 36시간 이내에 배송됩니다. 영업일 기준 특급 배송은 5,000원의 서비스 요금이 부과됩니다. 휴일 배송의 경우 서비스 요금은 8,000원입니다. 특급 배송은 국내 배송만 가능합니다. 해외 배송의 경우 모든 서비스 요금이 다릅니다."/>
 							<HBox
 								alignItems="Center"
 								justifyContent="Center"
 								width="100%">
-								<SegmentedButton selectedKey="{/selectedDeliveryMethod}">
+								<SegmentedButton selectedKey="{/selectedDeliveryMethod}" >
 									<items>
-										<SegmentedButtonItem key="Standard Delivery" text="Standard"/>
-										<SegmentedButtonItem key="Express Delivery" text="Express"/>
+										<SegmentedButtonItem key="Standard" text="일반배송"/>
+										<SegmentedButtonItem key="Express" text="특급배송"/>
 									</items>
 								</SegmentedButton>
 							</HBox>
@@ -280,32 +251,43 @@
 						        press="onMessageButtonPress"
 						        visible="{= !!$messagesLength}}"/>
 						<ToolbarSpacer/>
-						<Button type="Accept" text="Accept"/>
-						<Button type="Reject" text="Reject"/>
+						<Button type="Accept" text="동의"/>
+						<Button type="Reject" text="거절"/>
 					</OverflowToolbar>
 				</f:footer>
 			</f:DynamicPage>
 			<Page id="wizardBranchingReviewPage" showHeader="false">
 				<content>
 					<form:SimpleForm
-						title="1. List of products"
+						title="1. 주문상품"
 						minWidth="1024"
-						editable="false"
+						editable="false"						
 						layout="ResponsiveGridLayout">
-						<List items="{/ProductCollection}">
+						<List 
+							id="idProductFinList"
+							items="{payment>/CartEntitySet}">
 							<StandardListItem
-								title="{Name}"
+								title="{payment>Matname}"
 								type="Active"
-								description="{Description}"
-								icon="{ProductPicUrl}"
-								info="{Price} {CurrencyCode}"
+								description="{payment>Matcode}"
+								icon="{
+									path: 'payment>Matcode',
+									formatter: '.setImageUrl'
+								}"
+								info="{
+									path : 'payment>Matprice',
+									formatter : '.setPrice'
+								} "
 								iconDensityAware="false"
 								iconInset="false"/>
 						</List>
 						<ObjectHeader
 							title="Total"
 							id="ProductsTotalPrice2"
-							number="{/ProductsTotalPrice}"
+							number="{
+								path : '/ProductsTotalPrice',
+								formatter : '.setPrice'
+							}"
 							numberUnit="KRW">
 							<attributes>
 								<ObjectAttribute
@@ -316,7 +298,7 @@
 						</ObjectHeader>
 					</form:SimpleForm>
 					<form:SimpleForm
-						title="2. Payment type"
+						title="2. 결제방식"
 						minWidth="1024"
 						editable="false"
 						layout="ResponsiveGridLayout">
@@ -329,26 +311,26 @@
 
 					<form:SimpleForm
 						visible="{= ${/selectedPayment}==='Credit Card' ? true : false}"
-						title="3. Credit Card payment"
+						title="3. 신용카드 정보"
 						minWidth="1024"
 						editable="false"
 						layout="ResponsiveGridLayout">
 						<form:content>
-							<Label text="Name on card"/>
-							<Text text="{/CreditCard/Name}"/>
-							<Label text="Card number"/>
+							<Label text="카드사명"/>
+							<Text text="{/Name}"/>
+							<Label text="카드번호"/>
 							<Text text="{/CardNumber}"/>
-							<Label text="Security code"/>
-							<Text text="{/CreditCard/SecurityCode}"/>
-							<Label text="Expiration date"/>
-							<Text text="{/CreditCard/Expire}"/>
+							<Label text="CVS 세자리"/>
+							<Text text="{/SecurityCode}"/>
+							<Label text="카드 유효기간"/>
+							<Text text="{/Expire}"/>
 							<Link press="handleNavBackToCreditCard" text="Edit"/>
 						</form:content>
 					</form:SimpleForm>
 
 					<form:SimpleForm
 						visible="{= ${/selectedPayment}==='Bank Transfer' ? true : false}"
-						title="3. Bank Transfer"
+						title="3. 계좌이체 정보"
 						minWidth="1024"
 						editable="false"
 						layout="ResponsiveGridLayout">
@@ -372,50 +354,50 @@
 
 					<form:SimpleForm
 						visible="{= ${/selectedPayment}==='Cash on Delivery' ? true : false}"
-						title="3. Cash on delivery"
+						title="3. 무통장입금 정보"
 						minWidth="1024"
 						editable="false"
 						layout="ResponsiveGridLayout">
 						<form:content>
-							<Label text="First Name"/>
-							<Text text="{/CashOnDelivery/FirstName}"/>
-							<Label text="Last Name"/>
-							<Text text="{/CashOnDelivery/LastName}"/>
-							<Label text="Phone number"/>
-							<Text text="{/CashOnDelivery/Phone Number}"/>
-							<Label text="Email address"/>
-							<Text text="{/CashOnDelivery/Email}"/>
+							<Label text="이름"/>
+							<Text text="{/FirstName}"/>
+							<Label text="성"/>
+							<Text text="{/LastName}"/>
+							<Label text="전화번호"/>
+							<Text text="{/Phone Number}"/>
+							<Label text="주문자 이메일"/>
+							<Text text="{/Email}"/>
 							<Link press="handleNavBackToCashOnDelivery" text="Edit"/>
 						</form:content>
 					</form:SimpleForm>
 
 					<form:SimpleForm
-						title="4. Billing Address"
+						title="4. 송장주소"
 						minWidth="1024"
 						editable="false"
 						layout="ResponsiveGridLayout">
 						<form:content>
 							<Label text="Address"/>
-							<Text text="{/BillingAddress/Address}"/>
+							<Text text="{/Address}"/>
 							<Label text="City"/>
-							<Text text="{/BillingAddress/City}"/>
+							<Text text="{/City}"/>
 							<Label text="Zip Code"/>
-							<Text text="{/BillingAddress/ZipCode}"/>
+							<Text text="{/ZipCode}"/>
 							<Label text="Country"/>
-							<Text text="{/BillingAddress/Country}"/>
+							<Text text="{/Country}"/>
 							<Label text="Note"/>
-							<Text text="{/BillingAddress/Note}"/>
+							<Text text="{/Note}"/>
 							<Link press="handleNavBackToBillingAddress" text="Edit"/>
 						</form:content>
 					</form:SimpleForm>
 
 					<form:SimpleForm
-						title="5. Delivery type"
+						title="5. 배송방식"
 						minWidth="1024"
 						editable="false"
 						layout="ResponsiveGridLayout">
 						<form:content>
-							<Label text="Chosen delivery type"/>
+							<Label text="선택한 배송방식"/>
 							<Text text="{/selectedDeliveryMethod}"/>
 							<Link press="handleNavBackToDeliveryType" text="Edit"/>
 						</form:content>
@@ -424,8 +406,8 @@
 				<footer>
 					<Bar>
 						<contentRight>
-							<Button text="Submit" press="handleWizardSubmit"/>
-							<Button text="Cancel" press="handleWizardCancel"/>
+							<Button text="완료" press="handleWizardSubmit"/>
+							<Button text="취소" press="handleWizardCancel"/>
 						</contentRight>
 					</Bar>
 				</footer>
