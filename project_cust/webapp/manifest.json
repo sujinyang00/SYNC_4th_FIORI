@@ -88,7 +88,7 @@
         "viewType": "XML",
         "bypassed": {
 					"target": [
-						"RouteMain",
+						"RouteLogin",
 						"notFound"
 					]
 				},
@@ -100,8 +100,15 @@
       },
       "routes": [
         {
+          "name": "RouteLogin",
+          "pattern": "",
+          "target": [
+            "TargetLogin"
+          ]
+        },
+        {
           "name": "RouteMain",
-          "pattern": ":?query:",
+          "pattern": "main/{custCode}",
           "target": [
             "TargetMain"
           ]
@@ -123,6 +130,13 @@
         
       ],
       "targets": {
+        "TargetLogin": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Login",
+          "viewName": "Login"
+        },
         "TargetMain": {
           "viewType": "XML",
           "transition": "slide",

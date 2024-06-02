@@ -15,9 +15,8 @@ sap.ui.define([
     function (Controller, Device, JSONModel, Filter, FilterOperator, library, formatter, MessageToast, MessageBox) {
         "use strict";
 
-        var sCustcode = 'CUST000001';
+        var sCustcode = '';
         var aFilter = [];
-        aFilter.push(new Filter("Custcode", FilterOperator.EQ, sCustcode));
 
         return Controller.extend("projectcust.controller.Main", {
             _iCarouselTimeout: 0, // a pointer to the current timeout
@@ -25,7 +24,7 @@ sap.ui.define([
 
             formatter: formatter,
             
-            onInit: function () {                        
+            onInit: function () {                           
 
                 var oProductsModel = this.getOwnerComponent().getModel(),
                     iPagesCount = 1;
@@ -73,14 +72,6 @@ sap.ui.define([
                         console.log("M을 포함한 Matcode 속성:", mMatcodes);
                         console.log("M을 포함한 Matcode 속성:", cMatcodes);
                         
-                        // F 또는 M을 포함한 Matcode가 있는 경우 bedImg 설정
-                        // if (fMatcodes.length > 0) {
-                        //     oViewModel.setProperty("/bedImg", 'projectcust/img/F_Img.png');
-                        // } else if (mMatcodes.length > 0) {
-                        //     oViewModel.setProperty("/bedImg", 'projectcust/img/M_Img.png');
-                        // } else if (cMatcodes.length > 0) {
-                        //     oViewModel.setProperty("/bedImg", 'projectcust/img/M_Img.png');
-                        // }
                         }.bind(this),
                         error: function(oError) {
                             console.log("Products 전체조회 중 오류 발생: ", oError);
@@ -94,10 +85,23 @@ sap.ui.define([
                 //Router 객체 생성
                 this.oRouter = this.getOwnerComponent().getRouter();
                 this.oRouter.getRoute("RouteMain").attachPatternMatched(this._onPatternMatched, this);                                    
-                          
+                                                          
+                            
+
                 
-                
-                
+            },            
+
+
+            _onPatternMatched: function(oEvent) {
+                var oArgu = oEvent.getParameters().arguments;                      
+
+                if(oArgu.custCode) {
+                    aFilter.push(new Filter("Custcode", FilterOperator.EQ, oArgu.custCode));
+                    sCustcode = oArgu.custCode;
+                    console.log(aFilter); 
+                }   
+
+
                 var oDataModel2 = this.getOwnerComponent().getModel();
                 oDataModel2.read("/CartEntitySet", {
                     filters: aFilter,
@@ -121,18 +125,6 @@ sap.ui.define([
                         console.log("Cart 전체조회 중 오류 발생: ", oError);
                     }
                 });
-
-
-                
-            },
-
-            _onPatternMatched: function(oEvent) {
-                var oArgu = oEvent.getParameters().arguments;                      
-
-                if(oArgu.custCode) {
-                    aFilter.push(new Filter("Custcode", FilterOperator.EQ, oArgu.custCode));
-                    console.log(aFilter); 
-                }   
             },
 
             setImageUrl: function(sValue) {

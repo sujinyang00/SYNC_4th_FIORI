@@ -1,0 +1,24 @@
+<mvc:View
+    controllerName="projectcust.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    height="100%"
+    id="login1"
+    class="login-background"
+    >
+    <!-- <Image id="idImage" src="../image/Sync_Rest.jpg" width="100%"/> -->
+    <VBox
+        justifyContent="Center"
+        alignItems="Center"
+        class="login-background">
+        <Panel headerText="로그인" width="300px" height="300px">
+            <VBox class="sapUiContentPadding" width="100%">
+                <Label text="이메일" labelFor="username"/>
+                <Input id="email" placeholder="example@naver.com" />
+                <Label text="비밀번호" labelFor="password"/>
+                <Input id="password" type="Password" placeholder="비밀번호를 입력하세요."  />
+            </VBox>
+            <Button text="로그인" width="270px" press="onLogin" class="login-button" />
+        </Panel>
+    </VBox>
+</mvc:View>
