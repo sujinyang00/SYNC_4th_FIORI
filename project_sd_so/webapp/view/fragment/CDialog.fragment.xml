@@ -1,0 +1,75 @@
+<core:FragmentDefinition 
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:t="sap.ui.table"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:web="sap.ui.webc.main"
+    xmlns="sap.m">
+
+    <Dialog id="idCDialog"
+            contentWidth="38%"
+            contentHeight="auto"
+            title="케어 판매오더 상세조회"
+            draggable="true"
+            resizable="true">
+        <content>
+            <HBox >
+                    <t:Table
+                        id="idCTable"
+                        rows="{/SaoCareEntitySet}"
+                        paste="onPaste"
+                        rowSelectionChange="onRowSelectionChange"
+                        selectionMode="Single"
+                        selectionBehavior="RowOnly"
+                        width="auto"
+                        visibleRowCount="1"
+                        ariaLabelledBy="title">                        
+                        <t:columns>    					
+                            <t:Column width="8rem">
+                                <Label text="판매오더코드" />
+                                <t:template>
+                                    <Text text="{Saocode}" wrapping="false" />
+                                </t:template>
+                            </t:Column>
+                            <t:Column width="8rem">
+                                <Label text="고객코드" />
+                                <t:template>
+                                    <Text text="{Custcode}" wrapping="false" />
+                                </t:template>
+                            </t:Column>    					                            				                            
+                            <t:Column width="8rem">
+                                <Label text="케어코드" />
+                                <t:template>
+                                    <Text text="{Capcode}" wrapping="false" />
+                                </t:template>
+                            </t:Column>    					                            
+                            <t:Column width="8rem" hAlign="Begin">
+                                <Label text="구매한 상품명" />
+                                <t:template>
+                                    <Text text="{Matname}" wrapping="false" />
+                                </t:template>
+                            </t:Column>                             	
+                            <t:Column width="8rem" hAlign="End">
+                                <Label text="제품 판매가" />
+                                <t:template>
+                                    <Text text="{
+                                        path: 'Caprice',
+                                        formatter: '.formatPrice'
+                                    }" wrapping="false" />
+                                </t:template>
+                            </t:Column>				
+                        </t:columns>
+                    </t:Table>
+
+                </HBox>
+        </content>
+        <endButton>
+            <Button text="close" icon="sap-icon://decline" 
+            press="handleClose"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

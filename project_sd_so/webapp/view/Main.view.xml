@@ -33,11 +33,37 @@
                         <Label text="판매오더코드" />
                         <Input id="idSaocode"/>    
                     
-                        <Label text="판매유형" />
-                        <Input id="idOrdstate" />
+                        <Label text="판매유형" />                                               
+                        <Select
+                            id="idOrdstate"
+                            forceSelection="true"
+                            selectedKey="{/selectedOrdstate}">
+                            <core:ListItem key="All" 
+                                        text="전체" 
+                                        icon="" />
+                            <core:ListItem key="P" 
+                                        text="즉시구매" 
+                                        icon="sap-icon://bed" />
+                            <core:ListItem key="R5" 
+                                        text="5년 렌탈" 
+                                        icon="sap-icon://customer-history" />
+                            <core:ListItem key="R7" 
+                                        text="7년 렌탈" 
+                                        icon="sap-icon://customer-history" />
+                            <core:ListItem key="C" 
+                                        text="케어" 
+                                        icon="sap-icon://e-care" />      
+                        </Select>   
 
                         <Label text="반품여부" />
-                        <Input id="idSordtype" />                        
+                        <Select
+                            id="idOrdtype"
+                            forceSelection="true"
+                            selectedKey="{/selectedOrdtype}">                            
+                            <core:ListItem key="All" text="전체" />
+                            <core:ListItem key="1" text="구매확정" />
+                            <core:ListItem key="2" text="반품" icon="sap-icon://sys-cancel"/>
+                        </Select>           
                     </f:content>
                 </f:SimpleForm>
             </VBox>
@@ -50,16 +76,15 @@
                 <Panel headerText="판매오더 전체조회" expandable="true" expanded="true" >        
                     <layoutData>
                         <l:GridData span="XL6 L3 M6 S12"/>
-                    </layoutData>       
-
-                    <Table 
-                        id="idCategoriesTable" 
+                    </layoutData>
+                    <Table            
+                        id="idSaoTable"             
                         items="{/SaoEntitySet}" 
                         growing="true" 
                         growingThreshold="11"
                         mode="SingleSelectMaster" 
                         selectionChange="onSelectionChange"
-                        width="auto"
+                        width="auto"                        
                     >                              
                         <columns>
                             <Column
@@ -82,12 +107,7 @@
                                 hAlign="Begin"
                                 width="6em">
                                 <Text text="판매오더코드" />
-                            </Column>                
-                            <Column
-                                hAlign="Begin"
-                                width="6em">
-                                <Text text="고객코드" />
-                            </Column>                
+                            </Column>                                                          
                             <Column
                                 hAlign="Begin"
                                 width="6em">
@@ -104,8 +124,7 @@
                             <ColumnListItem vAlign="Middle">
                                 <cells>
                                     <web:Button text="{ path: 'Okstate', formatter: '.formatOkState' }"
-                                                click="handleClick" 
-                                                
+                                                click="handleClick"                                                 
                                                 icon="{= ${Okstate} === '1' ? 'complete' : 'warning' }"
                                                 design="{= ${Okstate} === '1' ? 'Positive' : 'Attention' }"
                                     />        
@@ -117,7 +136,7 @@
                                         <Text 
                                             text="{ path: 'Sordertype', formatter: '.formatOrdtype' }" 
                                         />
-                                    </HBox>
+                                    </HBox>                                    
                                     <web:Button 
                                         text="{ path: 'Ordstate', formatter: '.formatOrdState' }"
                                         click="handleClick" 
@@ -125,9 +144,7 @@
                                         design="Transparent"
                                     />                      
                                     <Text
-                                        text="{Saocode}" />                    
-                                    <Text
-                                        text="{Custcode}" />                    
+                                        text="{Saocode}" />                                                                         
                                     <Text text="{
                                         path: 'Orddate', 
                                         formatter: '.formatDate'
@@ -142,254 +159,11 @@
 
                 </Panel>
                 
-                <VBox height="1rem"/> 
-
-                <HBox >
-                    <t:Table
-                        id="idPTable"
-                        rows="{/SaoPurEntitySet}"
-                        paste="onPaste"
-                        rowSelectionChange="onRowSelectionChange"
-                        selectionMode="Single"
-                        selectionBehavior="RowOnly"
-                        width="57rem"
-                        ariaLabelledBy="title">
-                        <t:extension>
-                            <OverflowToolbar style="Clear">
-                                <Title id="title" text="즉시구매 판매오더 상세조회"/>
-                            </OverflowToolbar>
-                        </t:extension>
-                        <t:columns>    					
-                            <t:Column width="8rem">
-                                <Label text="판매오더코드" />
-                                <t:template>
-                                    <Text text="{Saocode}" wrapping="false" />
-                                </t:template>
-                            </t:Column>
-                            <t:Column width="8rem">
-                                <Label text="고객코드" />
-                                <t:template>
-                                    <Text text="{Custcode}" wrapping="false" />
-                                </t:template>
-                            </t:Column>    					
-                            <t:Column width="5em" hAlign="Center">
-                                <Label text="반품여부" />
-                                <t:template>
-                                    <HBox alignItems="Center" justifyContent="Center">
-                                            <core:Icon 
-                                                src="{ path: 'Sordertype', formatter: '.formatOrdtypeIcon' }" 
-                                            />
-                                            <ToolbarSpacer width="5px" /> 
-                                            <Text 
-                                                text="{ path: 'Sordertype', formatter: '.formatOrdtype' }" 
-                                            />
-                                        </HBox>
-                                    
-                                </t:template>
-                            </t:Column>    					                            				
-                            <t:Column width="5rem" hAlign="Center">
-                                <Label text="출하여부" />
-                                <t:template>
-                                <core:Icon 
-                                    src="{= ${Shipflag} === true ? 'sap-icon://circle-task' : 'sap-icon://decline' }"
-                                    color="{= ${Shipflag} === true ? '#86E57F' : '#F15F5F' }"/>
-                                </t:template>
-                            </t:Column>  
-                            <t:Column width="8rem" hAlign="Begin">
-                                <Label text="구매한 상품명" />
-                                <t:template>
-                                    <Text text="{Matname}" wrapping="false" />
-                                </t:template>
-                            </t:Column> 
-                            <t:Column width="5rem" hAlign="End">
-                                <Label text="수량" />
-                                <t:template>
-                                    <Text text="{Quant} EA" wrapping="false" />
-                                </t:template>
-                            </t:Column> 	
-                            <t:Column width="8rem" hAlign="End">
-                                <Label text="제품 판매가" />
-                                <t:template>
-                                    <Text text="{
-                                        path: 'Saprice',
-                                        formatter: '.formatPrice'
-                                    }" wrapping="false" />
-                                </t:template>
-                            </t:Column>				
-                        </t:columns>
-                    </t:Table>
-
-                </HBox>
 
 
-                <HBox >
-                    <t:Table
-                        id="idRTable"
-                        rows="{/SaoRentEntitySet}"
-                        paste="onPaste"
-                        rowSelectionChange="onRowSelectionChange"
-                        selectionMode="Single"
-                        selectionBehavior="RowOnly"
-                        width="57rem"
-                        ariaLabelledBy="title">
-                        <t:extension>
-                            <OverflowToolbar style="Clear">
-                                <Title text="렌탈 판매오더 상세조회"/>
-                            </OverflowToolbar>
-                        </t:extension>
-                        <t:columns>    					
-                            <t:Column width="8rem">
-                                <Label text="판매오더코드" />
-                                <t:template>
-                                    <Text text="{Saocode}" wrapping="false" />
-                                </t:template>
-                            </t:Column>
-                            <t:Column width="8rem">
-                                <Label text="고객코드" />
-                                <t:template>
-                                    <Text text="{Custcode}" wrapping="false" />
-                                </t:template>
-                            </t:Column>    					
-                            <t:Column width="5em" hAlign="Center">
-                                <Label text="반품여부" />
-                                <t:template>
-                                    <HBox alignItems="Center" justifyContent="Center">
-                                            <core:Icon 
-                                                src="{ path: 'Sordertype', formatter: '.formatOrdtypeIcon' }" 
-                                            />
-                                            <ToolbarSpacer width="5px" /> 
-                                            <Text 
-                                                text="{ path: 'Sordertype', formatter: '.formatOrdtype' }" 
-                                            />
-                                        </HBox>
-                                    
-                                </t:template>
-                            </t:Column>   				                            	
-                            <t:Column width="8rem">
-                                <Label text="렌탈코드" />
-                                <t:template>
-                                    <Text text="{Rentcode}" wrapping="false" />
-                                </t:template>
-                            </t:Column>
-                            <t:Column width="5rem" hAlign="Center">
-                                <Label text="렌탈상태" />
-                                <t:template>
-                                    <Text text="{
-                                            path: 'Rentstate',
-                                            formatter: '.formatRentState'
-                                        }" wrapping="false" />
-                                </t:template>
-                            </t:Column>    		
-                            <t:Column width="5rem" hAlign="Center">
-                                <Label text="렌탈기간" />
-                                <t:template>
-                                    <Text text="{
-                                            path: 'Rentperiod',
-                                            formatter: '.formatOrdState'
-                                        }" wrapping="false" />
-                                </t:template>
-                            </t:Column>    		
-                            <t:Column width="8em" hAlign="Center">
-                                <Label text="케어 예정일자" />
-                                <t:template>
-                                    <Text text="{
-                                            path: 'Caredate',
-                                            formatter: '.formatDate'
-                                        }" wrapping="false" />
-                                </t:template>
-                            </t:Column>    		
-                            <t:Column width="6em" hAlign="Center">
-                                <Label text="케어 경과일" />
-                                <t:template>
-                                    <Text text="{
-                                            path: 'Caredate',
-                                            formatter: '.calCareterm'    
-                                        }" wrapping="false" />
-                                </t:template>
-                            </t:Column>			
-                            <t:Column width="5rem" hAlign="Center">
-                                <Label text="출하여부" />
-                                <t:template>
-                                <core:Icon 
-                                    src="{= ${Shipflag} === true ? 'sap-icon://circle-task' : 'sap-icon://decline' }"
-                                    color="{= ${Shipflag} === true ? '#86E57F' : '#F15F5F' }"/>
-                                </t:template>
-                            </t:Column>  
-                            <t:Column width="8rem" hAlign="Begin">
-                                <Label text="구매한 상품명" />
-                                <t:template>
-                                    <Text text="{Matname}" wrapping="false" />
-                                </t:template>
-                            </t:Column>                              	
-                            <t:Column width="8rem" hAlign="End">
-                                <Label text="월 청구금액" />
-                                <t:template>
-                                    <Text text="{
-                                        path: 'Mbill',
-                                        formatter: '.formatPrice'
-                                    }" wrapping="false" />
-                                </t:template>
-                            </t:Column>				
-                        </t:columns>
-                    </t:Table>
-                </HBox>
-
-
-                <HBox >
-                    <t:Table
-                        id="idCTable"
-                        rows="{/SaoCareEntitySet}"
-                        paste="onPaste"
-                        rowSelectionChange="onRowSelectionChange"
-                        selectionMode="Single"
-                        selectionBehavior="RowOnly"
-                        width="57rem"
-                        ariaLabelledBy="title">
-                        <t:extension>
-                            <OverflowToolbar style="Clear">
-                                <Title text="케어 판매오더 상세조회"/>
-                            </OverflowToolbar>
-                        </t:extension>
-                        <t:columns>    					
-                            <t:Column width="8rem">
-                                <Label text="판매오더코드" />
-                                <t:template>
-                                    <Text text="{Saocode}" wrapping="false" />
-                                </t:template>
-                            </t:Column>
-                            <t:Column width="8rem">
-                                <Label text="고객코드" />
-                                <t:template>
-                                    <Text text="{Custcode}" wrapping="false" />
-                                </t:template>
-                            </t:Column>    					                            				                            
-                            <t:Column width="8rem">
-                                <Label text="케어코드" />
-                                <t:template>
-                                    <Text text="{Capcode}" wrapping="false" />
-                                </t:template>
-                            </t:Column>    					                            
-                            <t:Column width="8rem" hAlign="Begin">
-                                <Label text="구매한 상품명" />
-                                <t:template>
-                                    <Text text="{Matname}" wrapping="false" />
-                                </t:template>
-                            </t:Column>                             	
-                            <t:Column width="8rem" hAlign="End">
-                                <Label text="제품 판매가" />
-                                <t:template>
-                                    <Text text="{
-                                        path: 'Caprice',
-                                        formatter: '.formatPrice'
-                                    }" wrapping="false" />
-                                </t:template>
-                            </t:Column>				
-                        </t:columns>
-                    </t:Table>
-
-                </HBox>
-
-
+                <core:Fragment fragmentName="projectsdso.view.fragment.PDialog"/>       
+                <core:Fragment fragmentName="projectsdso.view.fragment.RDialog"/>       
+                <core:Fragment fragmentName="projectsdso.view.fragment.CDialog"/>       
 
 
             </VBox>

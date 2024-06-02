@@ -1,0 +1,98 @@
+<core:FragmentDefinition 
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:t="sap.ui.table"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:web="sap.ui.webc.main"
+    xmlns="sap.m">
+
+    <Dialog id="idPDialog"
+            contentWidth="45%"
+            contentHeight="auto"
+            title="즉시구매 판매오더 상세조회"
+            draggable="true"
+            resizable="true">
+        <content>
+            <HBox>
+                    <t:Table
+                        id="idPTable"
+                        rows="{/SaoPurEntitySet}"
+                        paste="onPaste"
+                        rowSelectionChange="onRowSelectionChange"
+                        selectionMode="Single"
+                        selectionBehavior="RowOnly"
+                        width="auto"
+                        visibleRowCount="1"
+                        ariaLabelledBy="title">
+                        
+                        <t:columns>
+                            <t:Column width="8rem">
+                                <Label text="판매오더코드" />
+                                <t:template>
+                                    <Text text="{Saocode}" wrapping="false" />
+                                </t:template>
+                            </t:Column>
+                            <t:Column width="8rem">
+                                <Label text="고객코드" />
+                                <t:template>
+                                    <Text text="{Custcode}" wrapping="false" />
+                                </t:template>
+                            </t:Column>
+                            <t:Column width="5em" hAlign="Center">
+                                <Label text="반품여부" />
+                                <t:template>
+                                    <HBox alignItems="Center" justifyContent="Center">
+                                        <core:Icon 
+                                            src="{ path: 'Sordertype', formatter: '.formatOrdtypeIcon' }" 
+                                        />
+                                        <ToolbarSpacer width="5px" />
+                                        <Text 
+                                            text="{ path: 'Sordertype', formatter: '.formatOrdtype' }" 
+                                        />
+                                    </HBox>
+                                </t:template>
+                            </t:Column>
+                            <t:Column width="5rem" hAlign="Center">
+                                <Label text="출하여부" />
+                                <t:template>
+                                    <core:Icon 
+                                        src="{= ${Shipflag} === true ? 'sap-icon://circle-task' : 'sap-icon://decline' }"
+                                        color="{= ${Shipflag} === true ? '#86E57F' : '#F15F5F' }"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column width="8rem" hAlign="Begin">
+                                <Label text="구매한 상품명" />
+                                <t:template>
+                                    <Text text="{Matname}" wrapping="false" />
+                                </t:template>
+                            </t:Column>
+                            <t:Column width="5rem" hAlign="End">
+                                <Label text="수량" />
+                                <t:template>
+                                    <Text text="{Quant} EA" wrapping="false" />
+                                </t:template>
+                            </t:Column>
+                            <t:Column width="8rem" hAlign="End">
+                                <Label text="제품 판매가" />
+                                <t:template>
+                                    <Text text="{
+                                        path: 'Saprice',
+                                        formatter: '.formatPrice'
+                                    }" wrapping="false" />
+                                </t:template>
+                            </t:Column>
+                        </t:columns>
+                    </t:Table>
+                </HBox>
+
+        </content>
+        <endButton>
+            <Button text="close" icon="sap-icon://decline" 
+            press="handleClose"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
