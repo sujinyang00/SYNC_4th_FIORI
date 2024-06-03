@@ -250,7 +250,7 @@
                                 intro="{payment>Quant} x"
                                 type="Active"
                                 number="{
-                                    path : 'payment>Matprice',
+                                    path : 'payment>Sapprice',
                                     formatter : '.setPrice'
                                 }"
                                 numberUnit="{payment>Currkey}"

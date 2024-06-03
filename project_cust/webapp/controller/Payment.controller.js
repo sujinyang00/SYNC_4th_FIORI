@@ -4,14 +4,16 @@ sap.ui.define([
 	"sap/m/MessageBox",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/model/Sorter"
+    "sap/ui/model/Sorter",
+    "sap/ui/model/odata/v2/ODataModel"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, MessageBox, Filter, FilterOperator, Sorter) {
+    function (Controller, JSONModel, MessageBox, Filter, FilterOperator, Sorter, ODataModel) {
         "use strict";
         var aFilter = [];
+        var sLeasePrc = '';  
 
         return Controller.extend("projectcust.controller.Payment", {
             onInit: function () {
@@ -21,6 +23,10 @@ sap.ui.define([
                 
                 var oPaymentModel = this.getOwnerComponent().getModel();
                 this.getView().setModel(oPaymentModel, "payment");
+                
+                
+                var oProductsModel = this.getOwnerComponent().getModel();
+                this.getView().setModel(oProductsModel, "products");
                 
                 
                 ////여기부터 sap ui5
@@ -44,11 +50,13 @@ sap.ui.define([
                 // this.model.loadData(sap.ui.require.toUrl("sap/ui/demo/mock/products.json"));
                 this.getView().setModel(this.model);
                 
-                
+
             },            
 
             onNavBack: function() {
-                this.getOwnerComponent().getRouter().navTo('RouteMain', {});
+                this.getOwnerComponent().getRouter().navTo('RouteMain', {
+                    custCode : this.sCustcode
+                }, true);
             },
 
             _onPatternMatched: function(oEvent) {
@@ -57,11 +65,14 @@ sap.ui.define([
                 if(oArgu.custCode) {
                     aFilter.push(new Filter("Custcode", FilterOperator.EQ, oArgu.custCode));
                     console.log('aFilter1 : ',aFilter);
+                    this.sCustcode = oEvent.getParameter("arguments").custCode;
                 }   
                                 
                 this.byId("idProductList").getBinding("items").filter(aFilter);
                 this.byId("idProductFinList").getBinding("items").filter(aFilter);
                 this.calcTotal(); //총 금액 계산
+
+                
             },
 
             
@@ -86,7 +97,7 @@ sap.ui.define([
                         var total = 0;
                         var results = oReturn.results; 
                         results.forEach(function(item) {                            
-                            total += parseInt(item.Matprice, 10);                                            
+                            total += parseInt(item.Saprice, 10);                                            
                         });
 
                         // 결과 출력
@@ -144,7 +155,6 @@ sap.ui.define([
 
             
             handleDelete: function (oEvent) {
-
                 var listItem = oEvent.getParameter("listItem");
                 var oContext = listItem.getBindingContext("payment");
                 var sPath = oContext.getPath();
@@ -275,6 +285,281 @@ sap.ui.define([
             completedHandler: function () {
                 this._oNavContainer.to(this.byId("wizardBranchingReviewPage"));
             },
+
+
+            
+
+            // 판매오더 생성
+            createSAO: function() {                 
+                
+                var oDataModel = this.getOwnerComponent().getModel();
+                oDataModel.read("/CartEntitySet", {
+                    filters: aFilter,
+                    success: function(oReturn) { 
+                        console.log('Cart 전체조회2 : ', oReturn);
+                        
+                        var sSaocode = '';
+                        var results = oReturn.results;
+                        results.forEach(function(item) {
+                            //이 반복문 돌때마다 saocode 증가해야됨
+
+                            oDataModel.read("/SaoEntitySet", {                            
+                                success: function(oReturn) { 
+                                    console.log('이전 판매오더 조회 : ', oReturn);
+
+                                    if (oReturn.results && oReturn.results.length > 0) {
+                                        var lastEntry = oReturn.results[oReturn.results.length - 1];
+                                        console.log('가장 마지막 oReturn 반환 : ', lastEntry);
+
+                                        var lastSaocode = lastEntry.Saocode;
+                                        console.log('가장 마지막 Saocode : ', lastSaocode);
+
+                                        // 숫자 부분 추출 후 1 증가
+                                        var numericPart = parseInt(lastSaocode.replace("SAO", ""), 10) + 1;
+                                        var newSaocode = "SAO" + String(numericPart).padStart(6, '0');
+                                        sSaocode = newSaocode;
+                                    } else {
+                                        console.log('No entries found.');
+                                    }
+
+                                }.bind(this),
+                                error: function(oError) {
+                                    console.log("이전 판매오더 조회 중 오류 발생: ", oError);
+                                }
+                            });
+                            
+                            
+
+                            // var aFilter2 = [];
+                            // aFilter2.push(new Filter("Matcode", FilterOperator.EQ, item.Matcode));
+                            // oDataModel.read("/ProductListEntitySet", {
+                            //     filters: aFilter2,
+                            //     success: function(oReturn) { 
+                            //         console.log('Products 리스채권금액 조회 : ', oReturn.results[0].Saprice);
+                            //         // sLeasePrc = oReturn.results.Saprice;
+                                    
+                            //     }.bind(this),
+                            //     error: function(oError) {
+                            //         console.log("Products 리스채권금액 조회 중 오류 발생: ", oError);
+                            //     }
+                            // });
+                            
+
+                            var sData = {
+                                Saocode : sSaocode, 
+                                Custcode : item.Custcode,
+                                Sordertype : "1",
+                                Orddate : "2024-06-03T00:00:00",  //오늘
+                                Okstate : "2",
+                                Ordstate : item.Ordstate,
+                                Shipflag : false,
+                                Agcode : "HB000",
+                                Crdat : "2024-06-03T00:00:00" //오늘
+                            };
+        
+                            console.log('판매오더 생성 : ', sData);
+        
+                            oDataModel.create("/SaoEntitySet", sData, {
+                                method: "POST",
+                                success: function(data) {
+                                    MessageToast.show("판매오더가 성공적으로 만들어졌습니다.");
+                                    oDialog.close();
+                                }.bind(this),
+                                error: function(oError) {
+                                    console.log('판매오더 생성 중 오류 발생 : ',oError);
+                                }
+                            });
+
+                            switch(item.Ordstate) {
+                                case "P":
+                                    // createPur(item, sSaocode);    //즉시구매 데이터 생성
+                                    var pData = {
+                                        Saocode : sSaocode,
+                                        Matcode : item.Matcode,
+                                        Quant : item.Quant,
+                                        Unit : "EA",
+                                        Saprice : item.Saprice,
+                                        Currkey : "KRW",
+                                        Crdat : "2024-06-03T00:00:00" //오늘
+                                    }
+                                    console.log('즉구 판매오더 생성 : ', pData);
+                
+                                    oDataModel.create("/PurchaseEntitySet", pData, {    
+                                        method: "POST",
+                                        success: function(data) {
+                                            MessageToast.show("즉시구매 오더가 성공적으로 만들어졌습니다.");
+                                            oDialog.close();
+                                        }.bind(this),
+                                        error: function(oError) {
+                                            console.log('즉구오더 생성 중 오류 발생 : ',oError);
+
+                                        }
+                                    });
+                                    break;
+                                case "R5":
+                                    // createRent(item, sSaocode);   //렌탈 데이터 생성
+                                    var sRentPrd = '';
+                                    var sLeasePrc = '';
+                                    switch (item.Ordstate) {
+                                        case "R5":
+                                            sRentPrd = '1';                            
+                                            break;
+                                        case "R7":
+                                            sRentPrd = '2';
+                                            break;
+                                    } 
+
+                                    switch(item.Matcode) {
+                                        case "FINM01":
+                                            sLeasePrc = "13500.00";
+                                        case "FINM02":
+                                            sLeasePrc = "15500.00";
+                                        case "FINM03":
+                                            sLeasePrc = "17500.00";
+                                        case "FINM04":
+                                            sLeasePrc = "20500.00";
+                                        case "FINS01":
+                                            sLeasePrc = "15000.00";
+                                        case "FINS02":
+                                            sLeasePrc = "17000.00";
+                                        case "FINS03":
+                                            sLeasePrc = "19000.00";
+                                        case "FINS04":
+                                            sLeasePrc = "22000.00";
+                                    }
+
+                                    
+                                    var rData = {
+                                        Rentcode : "REN240603002",    //바꿔야됨
+                                        Custcode : item.Custcode,
+                                        Saocode : sSaocode,
+                                        Matcode : item.Matcode,
+                                        Matname : item.Matname,
+                                        Mattype : "F",
+                                        Quant : item.Quant,
+                                        Unit : "EA",
+                                        Rentstate : "1",
+                                        Mbill : item.Saprice,
+                                        Leaseprice : sLeasePrc,   
+                                        Currkey : "KRW",
+                                        Rentperiod : sRentPrd,
+                                        Crdat : "2024-06-03T00:00:00"
+                                    }
+                                    console.log('렌탈 판매오더 생성 : ', rData);
+                                    
+                                    oDataModel.create("/RentEntitySet", sData, {
+                                        method: "POST",
+                                        success: function(data) {
+                                            MessageToast.show("렌탈 오더가 성공적으로 만들어졌습니다.");
+                                            oDialog.close();
+                                        }.bind(this),
+                                        error: function(oError) {
+                                            console.log('렌탈오더 생성 중 오류 발생 : ',oError);
+
+                                        }
+                                    });
+                                    break;
+                                case "R7":
+                                    // createRent(item, sSaocode);   //렌탈 데이터 생성
+                                    var sRentPrd = '';
+                                    var sLeasePrc = '';
+                                    switch (item.Ordstate) {
+                                        case "R5":
+                                            sRentPrd = '1';                            
+                                            break;
+                                        case "R7":
+                                            sRentPrd = '2';
+                                            break;
+                                    } 
+
+                                    switch(item.Matcode) {
+                                        case "FINM01":
+                                            sLeasePrc = "13500.00";
+                                        case "FINM02":
+                                            sLeasePrc = "15500.00";
+                                        case "FINM03":
+                                            sLeasePrc = "17500.00";
+                                        case "FINM04":
+                                            sLeasePrc = "20500.00";
+                                        case "FINS01":
+                                            sLeasePrc = "15000.00";
+                                        case "FINS02":
+                                            sLeasePrc = "17000.00";
+                                        case "FINS03":
+                                            sLeasePrc = "19000.00";
+                                        case "FINS04":
+                                            sLeasePrc = "22000.00";
+                                    }
+
+                                    
+                                    var rData = {
+                                        Rentcode : "REN240603002",    //바꿔야됨
+                                        Custcode : item.Custcode,
+                                        Saocode : sSaocode,
+                                        Matcode : item.Matcode,
+                                        Matname : item.Matname,
+                                        Mattype : "F",
+                                        Quant : item.Quant,
+                                        Unit : "EA",
+                                        Rentstate : "1",
+                                        Mbill : item.Saprice,
+                                        Leaseprice : sLeasePrc,   
+                                        Currkey : "KRW",
+                                        Rentperiod : sRentPrd,
+                                        Crdat : "2024-06-03T00:00:00"
+                                    }
+                                    console.log('렌탈 판매오더 생성 : ', rData);
+                                    
+                                    oDataModel.create("/RentEntitySet", sData, {
+                                        method: "POST",
+                                        success: function(data) {
+                                            MessageToast.show("렌탈 오더가 성공적으로 만들어졌습니다.");
+                                            oDialog.close();
+                                        }.bind(this),
+                                        error: function(oError) {
+                                            console.log('렌탈오더 생성 중 오류 발생 : ',oError);
+
+                                        }
+                                    });
+                                    break;
+                                case "C":
+                                    // createCare(item, sSaocode);   //케어 데이터 생성
+                                    console.log('케어 판매오더 생성');
+                                    var cData = {
+                                        Capcode : "CAR240603002",   //
+                                        Saocode : sSaocode,
+                                        Custcode : item.Custcode,
+                                        Matcode : item.Matcode,
+                                        Matname : item.Matname,
+                                        Capdate : "2024-06-06T00:00:00",
+                                        Caprice : item.Saprice,
+                                        Currkey : "KRW",
+                                        Crdat : "2024-06-03T00:00:00"
+                                    }
+
+                                    oDataModel.create("/CareEntitySet", cData, {
+                                        method: "POST",
+                                        success: function(data) {
+                                            MessageToast.show("케어 오더가 성공적으로 만들어졌습니다.");
+                                            oDialog.close();
+                                        },
+                                        error: function(oError) {
+                                            console.log('케어오더 생성 중 오류 발생 : ',oError);
+
+                                        }
+                                    });
+                                    break;
+                            }
+                        });
+
+                    }.bind(this),
+                    error: function(oError) {
+                        console.log("Cart 전체조회2 중 오류 발생: ", oError);
+                    }
+                });
+
+            },
+
     
             _handleMessageBoxOpen: function (sMessage, sMessageBoxType) {
                 MessageBox[sMessageBoxType](sMessage, {
@@ -283,9 +568,19 @@ sap.ui.define([
                         if (oAction === MessageBox.Action.YES) {
                             this._wizard.discardProgress(this._wizard.getSteps()[0]);
                             this.handleNavBackToList();
+                            
+                            this.createSAO();    //판매오더 생성
+                            console.log('custcode : ', this.sCustcode);
 
-                            //판매오더 발생
-                            //P R5 R7 나눠서 create 
+                            if (this.oRouter) {
+                                // this.oRouter.navTo('RouteMain', {}, true);
+                                this.oRouter.navTo('RouteMain', {
+                                    custCode: this.sCustcode
+                                }, true);
+                            } else {
+                                console.error("oRouter가 초기화되지 않았습니다.");
+                            }                         
+                            
                         }
                     }.bind(this)
                 });
@@ -323,7 +618,9 @@ sap.ui.define([
     
                 this._oNavContainer.attachAfterNavigate(fnAfterNavigate);
                 this._oNavContainer.to(this._oDynamicPage);
-            }
+            },
+
+            
 
             
 	});

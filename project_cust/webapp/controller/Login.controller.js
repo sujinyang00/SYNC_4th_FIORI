@@ -23,6 +23,7 @@ sap.ui.define([
     
             onLogin: function () {
                 var oDataModel = this.getOwnerComponent().getModel();
+                // var oDataModel = this.getOwnerComponent().getModel("mainService");
                 var oView = this.getView();
                 var sEmail = oView.byId("email").getValue();
                 var sPassword = oView.byId("password").getValue();

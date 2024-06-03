@@ -58,11 +58,11 @@
 							      headerText="상품"
 								  id="idProductList">
 								<ObjectListItem
-									title="{payment>Matname}"
+									title="{payment>Matname} / {payment>Quant} 개"
 									intro="{payment>Quant} x"
 									type="Active"
 									number="{
-										path : 'payment>Matprice',
+										path : 'payment>Saprice',
 										formatter : '.setPrice'
 									}"
 									numberUnit="{payment>Currkey}"
@@ -275,7 +275,7 @@
 									formatter: '.setImageUrl'
 								}"
 								info="{
-									path : 'payment>Matprice',
+									path : 'payment>Saprice',
 									formatter : '.setPrice'
 								} "
 								iconDensityAware="false"

@@ -53,7 +53,9 @@ sap.ui.define([
             },
 
             onNavBack: function() {
-                this.getOwnerComponent().getRouter().navTo('RouteMain', {});
+                this.getOwnerComponent().getRouter().navTo('RouteMain', {
+                    custCode : this.sCustcode
+                }, true);
             },
 
             _onPatternMatched: function(oEvent) {
@@ -113,6 +115,7 @@ sap.ui.define([
                 //장바구니
                 if(oArgu.custCode) {
                     sCustcode = oArgu.custCode;
+                    this.sCustcode = oEvent.getParameter("arguments").custCode;
                 }
                 aFilter2.push(new Filter("Custcode", FilterOperator.EQ, sCustcode));
                 console.log(aFilter);
