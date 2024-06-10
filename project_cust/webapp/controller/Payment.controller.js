@@ -120,7 +120,7 @@ sap.ui.define([
                 // sValue가 존재하고 유효한 숫자인지 확인
                 if (sValue && !isNaN(sValue)) {
                     // 숫자로 변환 후 정수로 변환하여 소숫점 이하를 제거하고 100을 곱합니다.
-                    var intValue = parseInt(parseFloat(sValue) * 100);
+                    var intValue = parseInt(parseFloat(sValue));
                     // KRW를 적용하고 3자리마다 쉼표를 추가하여 반환합니다.
                     return intValue.toLocaleString('en');// + " KRW";
                 } else {
@@ -286,89 +286,181 @@ sap.ui.define([
                 this._oNavContainer.to(this.byId("wizardBranchingReviewPage"));
             },
 
-
-            
+        
 
             // 판매오더 생성
             createSAO: function() {                 
                 
                 var oDataModel = this.getOwnerComponent().getModel();
+                var today2 = new Date().toISOString().split('.')[0];  // "2024-06-03T00:00:00" format
+        
+                // var sData = {
+                //     Saocode : "SAO240610097", 
+                //     Custcode : "CUST000001",
+                //     Sordertype : "1",
+                //     Orddate : today2,  //오늘
+                //     Okstate : "2",
+                //     Ordstate : "P",
+                //     Shipflag : false,
+                //     Agcode : "HB000",
+                //     Crdat : today2 //오늘
+                // };
+                // console.log('sData : ', sData);
+
+                // oDataModel.create("/SaoEntitySet", sData, {
+                //     method: "POST",
+                //     success: function(data) {
+                //         sap.m.MessageToast.show("판매오더가 성공적으로 만들어졌습니다.");                        
+                //     }.bind(this),
+                //     error: function(oError) {
+                //         console.log('판매오더 생성 중 오류 발생 : ',oError);
+                //     }
+                // });
+
+                var numericPart = '';
+                var numericPart2 = '';
+                var numericPart3 = '';
+                var maxSaocode = "SAO240611000";
+                var maxRentcode = "REN240611000";
+                var maxCarecode = "CAR240611000";
+                var newSaocode = '';
+                var newRentcode = '';
+                var newCarecode = '';
+
+                var sSaocode = '';
+                var sRentcode = '';
+                var sCarecode = '';
+
+                var newSaoUnit = [];
+                var newProUnit = [];
+                var newRentUnit = [];
+                var newCareUnit = [];
+
+                oDataModel.read("/SaoEntitySet", {     
+                    // filters: aFilter,               
+                    success: function(oReturn) { 
+                        console.log('이전 판매오더 조회 : ', oReturn);
+                        
+                        oReturn.results.forEach(function (item) {
+                            if (item.Saocode > maxSaocode) {
+                                maxSaocode = item.Saocode;
+                            }
+                        });
+
+                        // 숫자 부분 추출 후 1 증가
+                        numericPart = parseInt(maxSaocode.replace("SAO", ""), 10) + 1;
+                        // newSaocode = "SAO" + String(numericPart).padStart(8, '0');
+                        newSaocode = "SAO" + String(numericPart);
+                        sSaocode = newSaocode;
+                        console.log('새로 생성할 판매오더코드 : ', sSaocode);     
+
+                    }.bind(this),
+                    error: function(oError) {
+                        console.log("기존 판매오더 조회 중 오류 발생: ", oError);
+                    }
+                });
+
+                oDataModel.read("/SaoRentEntitySet", {     
+                    // filters: aFilter,               
+                    success: function(oReturn) { 
+                        console.log('기존 렌탈조회 : ', oReturn);
+                        
+                        oReturn.results.forEach(function (item) {
+                            if (item.Rentcode > maxRentcode) { 
+                                maxRentcode = item.Rentcode;
+                            }
+                        });
+
+                        // 숫자 부분 추출 후 1 증가
+                        numericPart2 = parseInt(maxRentcode.replace("REN", ""), 10) + 1;
+                        // newRentcode = "REN" + String(numericPart2).padStart(8, '0');
+                        newRentcode = "REN" + String(numericPart2);
+                        sRentcode = newRentcode;
+                        console.log('새로 생성할 렌탈코드 : ', sRentcode);     
+
+                    }.bind(this),
+                    error: function(oError) {
+                        console.log("렌탈조회 중 오류 발생: ", oError);
+                    }
+                });
+
+
+                oDataModel.read("/SaoCareEntitySet", {     
+                    // filters: aFilter,               
+                    success: function(oReturn) { 
+                        console.log('기존 케어조회 : ', oReturn);
+                        
+                        oReturn.results.forEach(function (item) {
+                            if (item.Capcode > maxCarecode) { 
+                                maxCarecode = item.Capcode;
+                            }
+                        });
+
+                        // 숫자 부분 추출 후 1 증가
+                        numericPart3 = parseInt(maxCarecode.replace("CAR", ""), 10) + 1;
+                        // newCarecode = "CAR" + String(numericPart3).padStart(8, '0');
+                        newCarecode = "CAR" + String(numericPart3);
+                        sCarecode = newCarecode;
+                        console.log('새로 생성할 케어코드 : ', sCarecode);     
+
+                    }.bind(this),
+                    error: function(oError) {
+                        console.log("케어조회 중 오류 발생: ", oError);
+                    }
+                });
+
+                
+
+
+
                 oDataModel.read("/CartEntitySet", {
                     filters: aFilter,
                     success: function(oReturn) { 
                         console.log('Cart 전체조회2 : ', oReturn);
                         
-                        var sSaocode = '';
                         var results = oReturn.results;
+
                         results.forEach(function(item) {
-                            //이 반복문 돌때마다 saocode 증가해야됨
+                            //이 반복문 돌때마다 saocode 증가해야됨                                    
+                            var today = new Date().toISOString().split('.')[0];  // "2024-06-03T00:00:00" format
 
-                            oDataModel.read("/SaoEntitySet", {                            
-                                success: function(oReturn) { 
-                                    console.log('이전 판매오더 조회 : ', oReturn);
+                            // newSaocode = "SAO" + String(numericPart).padStart(8, '0');
+                            newSaocode = "SAO" + String(numericPart);
+                            sSaocode = newSaocode;
 
-                                    if (oReturn.results && oReturn.results.length > 0) {
-                                        var lastEntry = oReturn.results[oReturn.results.length - 1];
-                                        console.log('가장 마지막 oReturn 반환 : ', lastEntry);
-
-                                        var lastSaocode = lastEntry.Saocode;
-                                        console.log('가장 마지막 Saocode : ', lastSaocode);
-
-                                        // 숫자 부분 추출 후 1 증가
-                                        var numericPart = parseInt(lastSaocode.replace("SAO", ""), 10) + 1;
-                                        var newSaocode = "SAO" + String(numericPart).padStart(6, '0');
-                                        sSaocode = newSaocode;
-                                    } else {
-                                        console.log('No entries found.');
-                                    }
-
-                                }.bind(this),
-                                error: function(oError) {
-                                    console.log("이전 판매오더 조회 중 오류 발생: ", oError);
-                                }
-                            });
+                            // newRentcode = "REN" + String(numericPart2).padStart(8, '0');
+                            newRentcode = "REN" + String(numericPart2);
+                            sRentcode = newRentcode;
                             
-                            
-
-                            // var aFilter2 = [];
-                            // aFilter2.push(new Filter("Matcode", FilterOperator.EQ, item.Matcode));
-                            // oDataModel.read("/ProductListEntitySet", {
-                            //     filters: aFilter2,
-                            //     success: function(oReturn) { 
-                            //         console.log('Products 리스채권금액 조회 : ', oReturn.results[0].Saprice);
-                            //         // sLeasePrc = oReturn.results.Saprice;
-                                    
-                            //     }.bind(this),
-                            //     error: function(oError) {
-                            //         console.log("Products 리스채권금액 조회 중 오류 발생: ", oError);
-                            //     }
-                            // });
-                            
+                            // newCarecode = "CAR" + String(numericPart3).padStart(8, '0');
+                            newCarecode = "CAR" + String(numericPart3);
+                            sCarecode = newCarecode;
 
                             var sData = {
                                 Saocode : sSaocode, 
                                 Custcode : item.Custcode,
                                 Sordertype : "1",
-                                Orddate : "2024-06-03T00:00:00",  //오늘
+                                Orddate : today,  //오늘
                                 Okstate : "2",
                                 Ordstate : item.Ordstate,
                                 Shipflag : false,
                                 Agcode : "HB000",
-                                Crdat : "2024-06-03T00:00:00" //오늘
-                            };
+                                Crdat : today //오늘
+                            }; 
         
-                            console.log('판매오더 생성 : ', sData);
-        
-                            oDataModel.create("/SaoEntitySet", sData, {
-                                method: "POST",
-                                success: function(data) {
-                                    MessageToast.show("판매오더가 성공적으로 만들어졌습니다.");
-                                    oDialog.close();
-                                }.bind(this),
-                                error: function(oError) {
-                                    console.log('판매오더 생성 중 오류 발생 : ',oError);
-                                }
-                            });
+                            // console.log('판매오더 생성 : ', sData);
+                            newSaoUnit.push(sData);
+                                            
+                            // oDataModel.create("/SaoEntitySet", sData, {
+                            //     method: "POST",
+                            //     success: function(data) {
+                            //         MessageToast.show("판매오더가 성공적으로 만들어졌습니다.");
+
+                            //     }.bind(this),
+                            //     error: function(oError) {
+                            //         console.log('판매오더 생성 중 오류 발생 : ',oError);
+                            //     }
+                            // });                            
 
                             switch(item.Ordstate) {
                                 case "P":
@@ -380,21 +472,22 @@ sap.ui.define([
                                         Unit : "EA",
                                         Saprice : item.Saprice,
                                         Currkey : "KRW",
-                                        Crdat : "2024-06-03T00:00:00" //오늘
+                                        Crdat : today //오늘
                                     }
-                                    console.log('즉구 판매오더 생성 : ', pData);
+                                    // console.log('즉구 판매오더 생성 : ', pData);
+                                    newProUnit.push(pData);
                 
-                                    oDataModel.create("/PurchaseEntitySet", pData, {    
-                                        method: "POST",
-                                        success: function(data) {
-                                            MessageToast.show("즉시구매 오더가 성공적으로 만들어졌습니다.");
-                                            oDialog.close();
-                                        }.bind(this),
-                                        error: function(oError) {
-                                            console.log('즉구오더 생성 중 오류 발생 : ',oError);
+                                    // oDataModel.create("/PurchaseEntitySet", pData, {    
+                                    //     method: "POST",
+                                    //     success: function(data) {
+                                    //         sap.m.MessageToast.show("즉구 판매오더가 성공적으로 만들어졌습니다.");   
 
-                                        }
-                                    });
+                                    //     }.bind(this),
+                                    //     error: function(oError) {
+                                    //         console.log('즉구오더 생성 중 오류 발생 : ',oError);
+
+                                    //     }
+                                    // });                                    
                                     break;
                                 case "R5":
                                     // createRent(item, sSaocode);   //렌탈 데이터 생성
@@ -430,7 +523,7 @@ sap.ui.define([
 
                                     
                                     var rData = {
-                                        Rentcode : "REN240603002",    //바꿔야됨
+                                        Rentcode : sRentcode,   
                                         Custcode : item.Custcode,
                                         Saocode : sSaocode,
                                         Matcode : item.Matcode,
@@ -443,21 +536,22 @@ sap.ui.define([
                                         Leaseprice : sLeasePrc,   
                                         Currkey : "KRW",
                                         Rentperiod : sRentPrd,
-                                        Crdat : "2024-06-03T00:00:00"
+                                        Crdat : today
                                     }
-                                    console.log('렌탈 판매오더 생성 : ', rData);
+                                    // console.log('렌탈5 판매오더 생성 : ', rData);
+                                    newRentUnit.push(rData);
                                     
-                                    oDataModel.create("/RentEntitySet", sData, {
-                                        method: "POST",
-                                        success: function(data) {
-                                            MessageToast.show("렌탈 오더가 성공적으로 만들어졌습니다.");
-                                            oDialog.close();
-                                        }.bind(this),
-                                        error: function(oError) {
-                                            console.log('렌탈오더 생성 중 오류 발생 : ',oError);
+                                    // oDataModel.create("/RentEntitySet", rData, {
+                                    //     method: "POST",
+                                    //     success: function(data) {
+                                    //         sap.m.MessageToast.show("렌탈 판매오더가 성공적으로 만들어졌습니다.");   
 
-                                        }
-                                    });
+                                    //     }.bind(this),
+                                    //     error: function(oError) {
+                                    //         console.log('렌탈오더 생성 중 오류 발생 : ',oError);
+
+                                    //     }
+                                    // });
                                     break;
                                 case "R7":
                                     // createRent(item, sSaocode);   //렌탈 데이터 생성
@@ -493,7 +587,7 @@ sap.ui.define([
 
                                     
                                     var rData = {
-                                        Rentcode : "REN240603002",    //바꿔야됨
+                                        Rentcode : sRentcode,   
                                         Custcode : item.Custcode,
                                         Saocode : sSaocode,
                                         Matcode : item.Matcode,
@@ -506,21 +600,22 @@ sap.ui.define([
                                         Leaseprice : sLeasePrc,   
                                         Currkey : "KRW",
                                         Rentperiod : sRentPrd,
-                                        Crdat : "2024-06-03T00:00:00"
+                                        Crdat : today
                                     }
-                                    console.log('렌탈 판매오더 생성 : ', rData);
-                                    
-                                    oDataModel.create("/RentEntitySet", sData, {
-                                        method: "POST",
-                                        success: function(data) {
-                                            MessageToast.show("렌탈 오더가 성공적으로 만들어졌습니다.");
-                                            oDialog.close();
-                                        }.bind(this),
-                                        error: function(oError) {
-                                            console.log('렌탈오더 생성 중 오류 발생 : ',oError);
+                                    // console.log('렌탈7 판매오더 생성 : ', rData);
+                                    newRentUnit.push(rData);
 
-                                        }
-                                    });
+                                    // oDataModel.create("/RentEntitySet", rData, {
+                                    //     method: "POST",
+                                    //     success: function(data) {
+                                    //         sap.m.MessageToast.show("렌탈 판매오더가 성공적으로 만들어졌습니다.");   
+
+                                    //     }.bind(this),
+                                    //     error: function(oError) {
+                                    //         console.log('렌탈오더 생성 중 오류 발생 : ',oError);
+
+                                    //     }
+                                    // });
                                     break;
                                 case "C":
                                     // createCare(item, sSaocode);   //케어 데이터 생성
@@ -534,29 +629,111 @@ sap.ui.define([
                                         Capdate : "2024-06-06T00:00:00",
                                         Caprice : item.Saprice,
                                         Currkey : "KRW",
-                                        Crdat : "2024-06-03T00:00:00"
+                                        Crdat : today
                                     }
+                                    // console.log('케어 판매오더 생성 : ', cData);
+                                    newCareUnit.push(cData);
+                                    
+                                    // oDataModel.create("/CareEntitySet", cData, {
+                                    //     method: "POST",
+                                    //     success: function(data) {
+                                    //         sap.m.MessageToast.show("케어 판매오더가 성공적으로 만들어졌습니다.");   
 
-                                    oDataModel.create("/CareEntitySet", cData, {
-                                        method: "POST",
-                                        success: function(data) {
-                                            MessageToast.show("케어 오더가 성공적으로 만들어졌습니다.");
-                                            oDialog.close();
-                                        },
-                                        error: function(oError) {
-                                            console.log('케어오더 생성 중 오류 발생 : ',oError);
+                                    //     },
+                                    //     error: function(oError) {
+                                    //         console.log('케어오더 생성 중 오류 발생 : ',oError);
 
-                                        }
-                                    });
+                                    //     }
+                                    // });
                                     break;
                             }
+
+                            numericPart += 1;
+                            numericPart2 += 1;
+                            numericPart3 += 1;
                         });
+
+                        
+
+                       
+
+                        if (newSaoUnit.length != 0) {
+                            console.log('SaoEntitySet : ', newSaoUnit);  
+                            //판매오더, 즉구, 렌탈, 케어 각각 create
+                            newSaoUnit.forEach(function(item) {
+                                // console.log('item : ', item);
+                                oDataModel.setUseBatch(false);
+                                oDataModel.create("/SaoEntitySet", item, {
+                                    method: "POST",
+                                    success: function(data) {
+                                        sap.m.MessageToast.show("판매오더가 성공적으로 만들어졌습니다.");
+                                    },
+                                    error: function(oError) {
+                                        console.log('판매오더 생성 중 오류 발생 : ', oError);
+                                    }
+                                });
+                            });                      
+                        }
+
+                        if (newProUnit.length != 0) {
+                            console.log('PurchaseEntitySet : ', newProUnit);
+                            oDataModel.setUseBatch(false);
+                            newProUnit.forEach(function(item) {
+                                oDataModel.create("/PurchaseEntitySet", item, {
+                                    method: "POST",
+                                    success: function(data) {
+                                        sap.m.MessageToast.show("즉구가 성공적으로 만들어졌습니다.");
+                                    },
+                                    error: function(oError) {
+                                        console.log('즉구 생성 중 오류 발생 : ', oError);
+                                    }
+                                });
+                            });
+                        }
+                        if (newRentUnit.length != 0) {
+                            console.log('RentEntitySet : ', newRentUnit);
+                            oDataModel.setUseBatch(false);
+                            newRentUnit.forEach(function(item) {
+                                oDataModel.create("/RentEntitySet", item, {
+                                    method: "POST",
+                                    success: function(data) {
+                                        sap.m.MessageToast.show("렌탈이 성공적으로 만들어졌습니다.");
+                                    },
+                                    error: function(oError) {
+                                        console.log('렌탈 생성 중 오류 발생 : ', oError);
+                                    }
+                                });
+                            });
+                        }
+                        if(newCareUnit.length != 0){
+                            console.log('CareEntitySet : ', newCareUnit);
+                            oDataModel.setUseBatch(false);
+                            newCareUnit.forEach(function(item) {
+                                oDataModel.create("/CareEntitySet", item, {
+                                    method: "POST",
+                                    success: function(data) {
+                                        sap.m.MessageToast.show("케어가 성공적으로 만들어졌습니다.");
+                                    },
+                                    error: function(oError) {
+                                        console.log('케어 생성 중 오류 발생 : ', oError);
+                                    }
+                                });
+                            });
+                        }
+
+                        
+
 
                     }.bind(this),
                     error: function(oError) {
                         console.log("Cart 전체조회2 중 오류 발생: ", oError);
                     }
                 });
+
+
+
+
+                
 
             },
 
@@ -568,7 +745,7 @@ sap.ui.define([
                         if (oAction === MessageBox.Action.YES) {
                             this._wizard.discardProgress(this._wizard.getSteps()[0]);
                             this.handleNavBackToList();
-                            
+                                                    
                             this.createSAO();    //판매오더 생성
                             console.log('custcode : ', this.sCustcode);
 

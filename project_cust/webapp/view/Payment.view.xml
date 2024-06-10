@@ -243,7 +243,7 @@
 					</Wizard>
 				</f:content>
 				<!-- DynamicPage Footer -->
-				<f:footer>
+				<!-- <f:footer>
 					<OverflowToolbar>
 						<Button icon="sap-icon://message-popup"
 						        text="{messagesLength}"
@@ -254,7 +254,7 @@
 						<Button type="Accept" text="동의"/>
 						<Button type="Reject" text="거절"/>
 					</OverflowToolbar>
-				</f:footer>
+				</f:footer> -->
 			</f:DynamicPage>
 			<Page id="wizardBranchingReviewPage" showHeader="false">
 				<content>
