@@ -682,7 +682,7 @@ sap.ui.define([
                                 oDataModel.create("/PurchaseEntitySet", item, {
                                     method: "POST",
                                     success: function(data) {
-                                        sap.m.MessageToast.show("즉구가 성공적으로 만들어졌습니다.");
+                                        sap.m.MessageToast.show("즉시구매오더가 성공적으로 만들어졌습니다.");
                                     },
                                     error: function(oError) {
                                         console.log('즉구 생성 중 오류 발생 : ', oError);
@@ -697,7 +697,7 @@ sap.ui.define([
                                 oDataModel.create("/RentEntitySet", item, {
                                     method: "POST",
                                     success: function(data) {
-                                        sap.m.MessageToast.show("렌탈이 성공적으로 만들어졌습니다.");
+                                        sap.m.MessageToast.show("렌탈오더가 성공적으로 만들어졌습니다.");
                                     },
                                     error: function(oError) {
                                         console.log('렌탈 생성 중 오류 발생 : ', oError);
@@ -712,7 +712,7 @@ sap.ui.define([
                                 oDataModel.create("/CareEntitySet", item, {
                                     method: "POST",
                                     success: function(data) {
-                                        sap.m.MessageToast.show("케어가 성공적으로 만들어졌습니다.");
+                                        sap.m.MessageToast.show("케어오더가 성공적으로 만들어졌습니다.");
                                     },
                                     error: function(oError) {
                                         console.log('케어 생성 중 오류 발생 : ', oError);
