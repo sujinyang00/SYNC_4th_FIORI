@@ -7,7 +7,7 @@
 	xmlns:lf="sap.ui.layout.form"
     xmlns:tnt="sap.tnt"
 	height="100%">
-    <Page id="page" title="{i18n>title}" >
+    <Page id="page" title="{i18n>title}">
     <!-- class="sapUiResponsiveContentPadding"> -->
 
     <customHeader>

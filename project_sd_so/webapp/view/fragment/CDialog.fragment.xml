@@ -15,7 +15,7 @@
             contentHeight="auto"
             title="케어 판매오더 상세조회"
             draggable="true"
-            resizable="true">
+            resizable="false">
         <content>
             <HBox >
                     <t:Table

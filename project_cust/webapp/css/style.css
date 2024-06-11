@@ -1,4 +1,23 @@
 /* Enter your custom styles here */
+.customTitleBar {
+  background-color: #d5e7e1 !important;
+}
+
+/* Main custom header */
+.customHeaderBar {
+  background-color: #173A36 !important;
+  color: white;
+}
+
+.customHeaderBar .sapMBarContentMiddle .sapMTitle,
+.customHeaderBar .sapMBarContentRight .sapMBtnBase .sapMBtnInner {
+  color: white !important;
+}
+
+.customHeaderBar .sapMBarContentRight .sapMBtnBase .sapMBtnInner .sapUiIcon {
+  color: white !important;
+}
+
 
 
 .noRightMargin {

@@ -11,11 +11,11 @@
     xmlns="sap.m">
 
     <Dialog id="idRDialog"
-            contentWidth="61%"
+            contentWidth="70%"
             contentHeight="auto"
             title="렌탈 판매오더 상세조회"
             draggable="true"
-            resizable="true">
+            resizable="false">
         <content>
             <HBox >
                     <t:Table
@@ -25,7 +25,7 @@
                         rowSelectionChange="onRowSelectionChange"
                         selectionMode="Single"
                         selectionBehavior="RowOnly"
-                        width="65em"
+                        width="auto"
                         visibleRowCount="1"
                         ariaLabelledBy="title">
                         <t:columns>    					

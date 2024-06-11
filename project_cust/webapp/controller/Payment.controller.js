@@ -700,7 +700,7 @@ sap.ui.define([
                                         sap.m.MessageToast.show("렌탈오더가 성공적으로 만들어졌습니다.");
                                     },
                                     error: function(oError) {
-                                        console.log('렌탈 생성 중 오류 발생 : ', oError);
+                                        console.log('렌탈 헤더생성 중 오류 발생 : ', oError);
                                     }
                                 });
                             });
