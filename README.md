@@ -22,7 +22,7 @@
 
 ## 기술 스택
 
-| Java Script  |  ABAP   |
+| Java Script  |  Fiori   |
 | :------:       | :-----: |
 | ![dart] | ![spring] |
 
